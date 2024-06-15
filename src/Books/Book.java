@@ -74,4 +74,10 @@ public class Book {
             stock -= jumlah;
         }
     }
+
+    public void tambahStock(int jumlah){
+        if(jumlah <= stock){
+            stock += jumlah;
+        }
+    }
 }
