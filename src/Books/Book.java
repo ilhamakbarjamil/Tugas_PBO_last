@@ -13,6 +13,14 @@ public class Book {
         this.stock = stock;
     }
 
+    public Book(Book book) {
+        this.judul = book.judul;
+        this.author = book.author;
+        this.BookId = book.BookId;
+        this.category = book.category;
+        this.stock = book.stock;
+    }
+
     public String getJudul() {
         return judul;
     }
@@ -61,7 +69,9 @@ public class Book {
         this.durasi = durasi;
     }
 
-    
-
-    
+    public void kurangStock(int jumlah){
+        if(stock > 0){
+            stock -= jumlah;
+        }
+    }
 }
