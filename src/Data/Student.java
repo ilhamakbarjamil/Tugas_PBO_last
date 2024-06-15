@@ -34,7 +34,7 @@ public class Student extends User{
                     if(cek.getStock() > 0){
                         int durasiPinjam;
                         do {
-                            System.out.println("durasi pinjaman (max 14 hari) : ");
+                            System.out.print("durasi pinjaman (max 14 hari) : ");
                             durasiPinjam = scan.nextInt();
                             scan.nextLine();
                             if(durasiPinjam > 14){
@@ -58,7 +58,35 @@ public class Student extends User{
     }    
 
     //kembalikan buku
-    
+    public void kembalikanBuku(){
+        boolean kembali = true;
+        while (kembali) {
+            bukuBorrowed();
+            System.out.print("Masukkan Id buku : ");
+            String Id = scan.nextLine();
+            
+            for(Book back : bukuBorrowed){
+                if(back.getBookId().equals(Id)){
+                    System.out.print("inputkan jumlah buku yang dikembalikan : ");
+                    int jumlahkembali = scan.nextInt();
+                    scan.nextLine();
+                    if(jumlahkembali <= back.getStock()){
+                        for(Book tambah : booklist){
+                            tambah.tambahStock(jumlahkembali);
+                            bukuBorrowed.remove(back);
+                            System.out.println("buku berhasil dikembalikan");
+                            return;
+                        }
+                        
+                    }else{
+                        System.out.println("melebihi batas stok yang dipinjam");
+                    }
+                }else{
+                    System.out.println("BookId '"+Id+"' tidak ditemukan");
+                }
+            }
+        }
+    }
 
     //tampilkan buku yang sedang dipinjam
     public void bukuBorrowed(){
@@ -100,7 +128,7 @@ public class Student extends User{
                     pinjamBuku();
                 break;
                 case 4:
-
+                    kembalikanBuku();
                 break;
                 case 5:
                     menu = false;

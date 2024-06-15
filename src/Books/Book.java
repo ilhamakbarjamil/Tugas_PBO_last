@@ -74,4 +74,8 @@ public class Book {
             stock -= jumlah;
         }
     }
+
+    public void tambahStock(int jumlah){
+        stock += jumlah;
+    }
 }
