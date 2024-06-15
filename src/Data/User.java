@@ -10,7 +10,7 @@ import Util.iMenu;
 public class User implements iMenu{
     
     //objek
-    ArrayList <Book> booklist = new ArrayList<>();
+    protected static ArrayList <Book> booklist = new ArrayList<>();
     Scanner scan = new Scanner(System.in);
 
     protected String nama;
@@ -78,9 +78,10 @@ public class User implements iMenu{
         if(nama == null || nim == null || fakultas == null || jurusan == null){
             System.out.println("daftarkan dulu");
         }else{
-            System.out.println("Nama : "+nama);
-            System.out.println("Nim : "+nim);
-            System.out.println("Fakultas : "+fakultas);
+            System.out.println("User Yang Login");
+            System.out.println("Nama\t: "+nama);
+            System.out.println("Nim\t: "+nim);
+            System.out.println("Fakultas: "+fakultas);
             System.out.println("Jurusan : "+jurusan);
         }
     }

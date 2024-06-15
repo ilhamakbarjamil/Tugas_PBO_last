@@ -19,14 +19,9 @@ public class Admin extends User{
     }
 
     public Admin(){}
-
-    //objek
-
-    // Student student = new Student();
     
     Scanner scan = new Scanner(System.in);
-
-
+    
     //login
     boolean login = true;
     public void login(){
@@ -159,8 +154,16 @@ public class Admin extends User{
         }
     }
 
-    //input book
+    //2. input book
     public void inputBook(TextBook book){
+        booklist.add(book);
+    }
+
+    public void inputBook(StoryBook book){
+        booklist.add(book);
+    }
+
+    public void inputBook(HistoryBook book){
         booklist.add(book);
     }
 
