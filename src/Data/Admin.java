@@ -8,6 +8,7 @@ import java.util.Scanner;
 import Books.HistoryBook;
 import Books.StoryBook;
 import Books.TextBook;
+import Exception.IllegalAdminAccess;
 import Utama.Main;
 
 public class Admin extends User{
@@ -21,7 +22,7 @@ public class Admin extends User{
     public Admin(){}
     
     Scanner scan = new Scanner(System.in);
-    
+
     //login
     boolean login = true;
     public void login(){
@@ -39,40 +40,45 @@ public class Admin extends User{
         }
     }
 
-
     //menu
     @Override
     public void menu() {
         boolean running = true;
         while (running) {
-            System.out.println("==== Admin Menu");
-            System.out.println("1. Tambah Student");
-            System.out.println("2. Tambah Buku");
-            System.out.println("3. Tampilkan Student");
-            System.out.println("4. Tampilkan Buku");
-            System.out.println("5. Logout");
-            System.out.print("choose Option : ");
-            int choose = scan.nextInt();
-            scan.nextLine();
-            switch (choose) {
-                case 1:
-                    tambahStudent();
-                break;
-                case 2:
-                    inputBook();
-                break;
-                case 3:
-                    displayStudent();
-                break;
-                case 4:
-                    displayBook();
-                break;                
-                case 5:
-                    login = false;
-                    running = false;
-                break;
-                default:
+            try {
+                System.out.println("==== Admin Menu");
+                System.out.println("1. Tambah Student");
+                System.out.println("2. Tambah Buku");
+                System.out.println("3. Tampilkan Student");
+                System.out.println("4. Tampilkan Buku");
+                System.out.println("5. Logout");
+                System.out.print("choose Option : ");
+                int choose = scan.nextInt();
+                scan.nextLine();
+                switch (choose) {
+                    case 1:
+                        tambahStudent();
                     break;
+                    case 2:
+                        inputBook();
+                    break;
+                    case 3:
+                        displayStudent();
+                    break;
+                    case 4:
+                        displayBook();
+                    break;                
+                    case 5:
+                        login = false;
+                        running = false;
+                    break;
+                    default:
+                        throw new IllegalAdminAccess("pilih 1-5");
+                }
+            } catch (IllegalAdminAccess e) {
+               System.out.println(e.getMessage());
+            }catch(Exception e){
+                System.out.println(e.getMessage());
             }
         }
     }

@@ -3,6 +3,7 @@ package Data;
 import java.util.ArrayList;
 
 import Books.Book;
+import Utama.Main;
 
 public class Student extends User{
 
@@ -31,7 +32,10 @@ public class Student extends User{
                     System.out.print("input jumlah buku yang akan dipinjam : ");
                     int jumlahPinjamBuku = scan.nextInt();
                     scan.nextLine();
-                    if(cek.getStock() > 0){
+                    if(jumlahPinjamBuku > cek.getStock()){
+                        System.out.println("melebihi stock yang ada");
+                        return;
+                    }else{
                         int durasiPinjam;
                         do {
                             System.out.print("durasi pinjaman (max 14 hari) : ");
@@ -49,8 +53,6 @@ public class Student extends User{
                                 return;
                             }
                         } while (durasiPinjam > 14);
-                    }else{
-                        System.out.println("Melebihi stock yang ada");
                     }
                 }
             }
@@ -132,6 +134,7 @@ public class Student extends User{
                 break;
                 case 5:
                     menu = false;
+                    Main.checkNim = false;
                 break;
             
                 default:
