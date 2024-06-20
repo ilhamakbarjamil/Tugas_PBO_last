@@ -12,6 +12,7 @@ public class Student extends User{
     //objek
     private ArrayList<Book> bukuBorrowed = new ArrayList<>();
 
+    
     // protected String nama;
     // protected String nim;
     // protected String fakultas;
@@ -75,16 +76,22 @@ public class Student extends User{
                     System.out.print("inputkan jumlah buku yang dikembalikan : ");
                     int jumlahkembali = scan.nextInt();
                     scan.nextLine();
+
                     if(jumlahkembali <= back.getStock()){
                         for(Book tambah : booklist){
-                            tambah.tambahStock(jumlahkembali);
-                            bukuBorrowed.remove(back);
+                            back.setStock(back.getStock() - jumlahkembali);
+                            // tambah.tambahStock(jumlahkembali);
+                            tambah.setStock(jumlahkembali + tambah.getStock());
                             System.out.println("buku berhasil dikembalikan");
                             sendEmailKembali.kirimEmail(this.getEmail());
+
+                            if(back.getStock() == 0){
+                                bukuBorrowed.remove(back);
+                            }
                             return;
                         }
-                        
-                    }else{
+                    } 
+                    else{
                         System.out.println("melebihi batas stok yang dipinjam");
                     }
                 }else{

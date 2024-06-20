@@ -10,7 +10,7 @@ import Util.iMenu;
 public class User implements iMenu{
     
     //objek
-    protected static ArrayList <Book> booklist = new ArrayList<>();
+    public static ArrayList <Book> booklist = new ArrayList<>();
     Scanner scan = new Scanner(System.in);
 
     protected String nama;

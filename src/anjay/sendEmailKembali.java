@@ -5,6 +5,8 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+// import Data.User;
+
 // import Data.Student;
 
 public class sendEmailKembali {
@@ -33,6 +35,10 @@ public class sendEmailKembali {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(kirim));
             message.setSubject("Mengembalikan Buku");
             message.setText("Buku yang dikembalikan");
+
+            // for(Book display : User.booklist){
+
+            // }
             
 
             Transport.send(message);
