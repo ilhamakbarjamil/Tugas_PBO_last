@@ -17,12 +17,14 @@ public class User implements iMenu{
     protected String nim;
     protected String fakultas;
     protected String jurusan;
+    protected String email;
 
-    public User(String nama, String nim, String fakultas, String jurusan){
+    public User(String nama, String nim, String fakultas, String jurusan, String email){
         this.nama = nama;
         this.nim = nim;
         this.fakultas = fakultas;
         this.jurusan = jurusan;
+        this.email = email;
     }
 
     public User(){}
@@ -59,6 +61,13 @@ public class User implements iMenu{
         return jurusan;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     //display Book
     public void displayBook(){
@@ -85,36 +94,14 @@ public class User implements iMenu{
             System.out.println("Nim\t: "+nim);
             System.out.println("Fakultas: "+fakultas);
             System.out.println("Jurusan : "+jurusan);
+            System.out.println("Email\t: "+email);
             System.out.println("----------------------------------");
         }
     }
-    
-    
-    
+
 
     @Override
     public void menu() {
-        boolean menu = true;
-        while (menu) {
-            System.out.println("=== Menu User");
-            System.out.println("1. Tampilkan informasi");
-            System.out.println("2. Tampilkan buku yang dipinjam");
-            System.out.println("3. Pinjam buku");
-            System.out.println("4. Kembalikan buku");
-            System.out.println("5. Logout");
-            System.out.print("choose option : ");
-            int choose = scan.nextInt();
-            scan.nextLine();
-            switch (choose) {
-                case 1:
-                    displayInformation();
-                break;
-                case 5:
-                    menu = false;
-                break;
-                default:
-                    break;
-            }
-        }
+       
     }
 }

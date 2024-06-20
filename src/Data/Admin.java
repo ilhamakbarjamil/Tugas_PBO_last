@@ -15,8 +15,8 @@ public class Admin extends User{
     private String USERNAME = "admin";
     private String PASSWORD = "admin123";
 
-    public Admin(String name, String nim, String faculty, String program){
-        super(name, nim, faculty, program);
+    public Admin(String name, String nim, String faculty, String program, String email){
+        super(name, nim, faculty, program, email);
     }
 
     public Admin(){}
@@ -138,8 +138,21 @@ public class Admin extends User{
                     System.out.println("Harus menggunakan 'huruf'");
                 }
             } while(!jurusan.matches("^[a-zA-Z\\s]+$"));
+
+            //email
+            boolean input = true;
+            while(input){
+                System.out.print("Input Email anda : ");
+                email = scan.nextLine();
+                if(email.contains("@gmail.com")){
+                    input = false;
+                }else{
+                    System.out.println("harus mengandung '@gmail.com'");
+                }
+            }
+
             
-            Student student = new Student(nama, nim, fakultas, jurusan);
+            Student student = new Student(nama, nim, fakultas, jurusan, email);
             Main.userlist.add(student);
             break;
         }
@@ -156,6 +169,7 @@ public class Admin extends User{
             System.out.println("Nim\t: "+display.getNim());
             System.out.println("Fakultas: "+display.getFakultas());
             System.out.println("Jurusan : "+display.getJurusan());
+            System.out.println("Email\t: "+display.getEmail());
             System.out.println("");
         }
     }

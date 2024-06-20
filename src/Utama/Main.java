@@ -16,11 +16,9 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         Admin admin = new Admin();
         Main main = new Main();
-        // Student student = new Student();
 
-        userlist.add(new Student("Ilham Akbar Jamil", "202310370311085", "Teknik", "Informatika"));
-        userlist.add(new Student("Farhan Fauzi", "202310370311100", "Teknik", "Informatika"));
-        userlist.add(new Student("Royhan Azizi Roji", "202310370311067", "Teknik", "Informatika"));
+        // Student student = new Student();
+        userlist.add(new Student("Ilham Akbar Jamil", "202310370311085", "Teknik", "Informatika", "ilhamakbarjamil8@gmail.com"));
 
         admin.inputBook(new TextBook("babi", "akbar", "1718381338657-88", "Text", 10));
 

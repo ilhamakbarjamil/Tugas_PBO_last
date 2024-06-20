@@ -1,9 +1,10 @@
 package Data;
 
-import java.util.ArrayList;
-
 import Books.Book;
 import Utama.Main;
+import anjay.sendEmail;
+
+import java.util.*;
 
 public class Student extends User{
 
@@ -15,8 +16,8 @@ public class Student extends User{
     // protected String fakultas;
     // protected String jurusan;
 
-    public Student(String nama, String nim, String fakultas, String jurusan){
-        super(nama, nim, fakultas, jurusan);
+    public Student(String nama, String nim, String fakultas, String jurusan, String email){
+        super(nama, nim, fakultas, jurusan, email);
     }
 
     //pinjam buku
@@ -50,6 +51,7 @@ public class Student extends User{
                                 bukuBorowed.setDurasi(durasiPinjam);
                                 bukuBorrowed.add(bukuBorowed);
                                 System.out.println("buku dengan Id "+BookId+" berhasil dipinjam");
+                                sendEmail.kirimEmail(this.getEmail());
                                 return;
                             }
                         } while (durasiPinjam > 14);
@@ -77,6 +79,7 @@ public class Student extends User{
                             tambah.tambahStock(jumlahkembali);
                             bukuBorrowed.remove(back);
                             System.out.println("buku berhasil dikembalikan");
+                            
                             return;
                         }
                         
@@ -89,6 +92,8 @@ public class Student extends User{
             }
         }
     }
+
+    
 
     //tampilkan buku yang sedang dipinjam
     public void bukuBorrowed(){
@@ -105,6 +110,7 @@ public class Student extends User{
             System.out.println("-----------------------------------------------------------------------------------------------------------------");
         }
     }
+
 
     @Override
     public void menu() {
