@@ -11,7 +11,7 @@ public class Main {
     public static ArrayList<Student> userlist = new ArrayList<>();
     Main login;
     public static void main(String[] args) {
-        
+        //farhan yang edit
         //objek
         Scanner scan = new Scanner(System.in);
         Admin admin = new Admin();
