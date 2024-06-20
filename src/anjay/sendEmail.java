@@ -1,6 +1,6 @@
 package anjay;
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
