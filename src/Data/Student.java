@@ -2,7 +2,8 @@ package Data;
 
 import Books.Book;
 import Utama.Main;
-import anjay.sendEmail;
+import anjay.sendEmailKembali;
+import anjay.sendEmailPinjam;
 
 import java.util.*;
 
@@ -51,7 +52,7 @@ public class Student extends User{
                                 bukuBorowed.setDurasi(durasiPinjam);
                                 bukuBorrowed.add(bukuBorowed);
                                 System.out.println("buku dengan Id "+BookId+" berhasil dipinjam");
-                                sendEmail.kirimEmail(this.getEmail());
+                                sendEmailPinjam.kirimEmail(this.getEmail());
                                 return;
                             }
                         } while (durasiPinjam > 14);
@@ -79,7 +80,7 @@ public class Student extends User{
                             tambah.tambahStock(jumlahkembali);
                             bukuBorrowed.remove(back);
                             System.out.println("buku berhasil dikembalikan");
-                            
+                            sendEmailKembali.kirimEmail(this.getEmail());
                             return;
                         }
                         

@@ -7,7 +7,7 @@ import javax.mail.internet.*;
 
 // import Data.Student;
 
-public class sendEmail {
+public class sendEmailKembali {
     public static void kirimEmail(String kirim){
 
         final String username = "ilhamakbarjamil8@gmail.com";
@@ -31,8 +31,8 @@ public class sendEmail {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(kirim));
-            message.setSubject("Pinjam Buku");
-            message.setText("Daftar buku yang anda pinjam");
+            message.setSubject("Mengembalikan Buku");
+            message.setText("Buku yang dikembalikan");
             
 
             Transport.send(message);
