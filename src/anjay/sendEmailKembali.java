@@ -1,5 +1,6 @@
 package anjay;
 
+import java.util.Date;
 // import java.util.ArrayList;
 import java.util.Properties;
 import javax.mail.*;
@@ -47,8 +48,9 @@ public class sendEmailKembali {
                 emailContent.append("BookId\t: "+book.getBookId()+"\n");
                 emailContent.append("Kategori\t: "+book.getCategory()+"\n");
                 emailContent.append("Jumlah\t: "+Student.jumlahkembali+"\n");
+                emailContent.append("tanggal\t:"+ new Date());
             }
-            emailContent.append("----------------------------------------------------------------------");
+            emailContent.append("\n----------------------------------------------------------------------");
             // for(Book display : User.booklist){
 
             // }
