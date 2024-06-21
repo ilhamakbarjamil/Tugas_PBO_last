@@ -59,16 +59,20 @@ public class Main {
     public void inputNim(Scanner scan){
         checkNim = true;
         while (checkNim){
-            System.out.print("Masukkan Nim(99 = back) : ");
-            String nim = scan.nextLine();
-            if(nim.equalsIgnoreCase("99")){
-                checkNim = false;
-            }
-            for(Student cek : userlist){
-                if(cek.getNim().equals(nim)){
-                    System.out.println("Welcome "+cek.getNama());
-                    cek.menu();
+            try {
+                System.out.print("Masukkan Nim(99 = back) : ");
+                String nim = scan.nextLine();
+                if(nim.equalsIgnoreCase("99")){
+                    checkNim = false;
                 }
+                for(Student cek : userlist){
+                    if(cek.getNim().equals(nim)){
+                        System.out.println("Welcome "+cek.getNama());
+                        cek.menu();
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
     }

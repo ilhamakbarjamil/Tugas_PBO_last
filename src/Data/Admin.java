@@ -28,14 +28,18 @@ public class Admin extends User{
     public void login(){
         login = true;
         while (login) {
-            System.out.print("Username : ");
-            String username = scan.nextLine();
-            System.out.print("Password : ");
-            String password = scan.nextLine();
-            if(isAdmin(username, password)){
-                menu();
-            }else{
-                System.out.println("username dan password invalid");
+            try {
+                System.out.print("Username : ");
+                String username = scan.nextLine();
+                System.out.print("Password : ");
+                String password = scan.nextLine();
+                if(isAdmin(username, password)){
+                    menu();
+                }else{
+                    System.out.println("username dan password invalid");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -53,8 +57,8 @@ public class Admin extends User{
                 System.out.println("4. Tampilkan Buku");
                 System.out.println("5. Logout");
                 System.out.print("choose Option : ");
-                int choose = scan.nextInt();
-                scan.nextLine();
+                int choose = Integer.parseInt(scan.nextLine());
+                // scan.nextLine();
                 switch (choose) {
                     case 1:
                         tambahStudent();
@@ -87,6 +91,7 @@ public class Admin extends User{
     public void tambahStudent(){
         boolean tambah = true;
         while (tambah) {
+            try {
             //nama--
             String nama;
             do{
@@ -155,6 +160,9 @@ public class Admin extends User{
             Student student = new Student(nama, nim, fakultas, jurusan, email);
             Main.userlist.add(student);
             break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -190,52 +198,56 @@ public class Admin extends User{
     public void inputBook(){
         boolean input = true;
         while (input) {
-            System.out.println("choose Kategori");
-            System.out.println("1. Story Book");
-            System.out.println("2. History Book");
-            System.out.println("3. Text Book");
-            System.out.print("choose Kategori : ");
-            int choose = scan.nextInt();
-            scan.nextLine();
-            String kategori = "";
-            switch (choose) {
-                case 1:
-                    kategori = "Story";
-                break;
-                case 2:
-                    kategori = "History";
-                break;
-                case 3:
-                    kategori = "Text";
-                break;
-                default:
-                    System.out.println("invalid option");
-            }
-            System.out.print("Masukkan judul : ");
-            String judul = scan.nextLine();
-            System.out.print("Masukkan penulis : ");
-            String penulis = scan.nextLine();
-            System.out.print("Masukkan stock : ");
-            int stock = scan.nextInt();
-            scan.nextLine();
-
-            String bookId = generated();
-            switch (choose) {
-                case 1:
-                    booklist.add(new StoryBook(judul, penulis, bookId, kategori, stock));
-                    input = false;
-                break;
-                case 2:
-                    booklist.add(new HistoryBook(judul, penulis, bookId, kategori, stock));
-                    input = false;
-                break;
-                case 3:
-                    booklist.add(new TextBook(judul, penulis, bookId, kategori, stock));
-                    input = false;
-                break;
-                default:
-                    System.out.println("invalid option");
+            try {
+                System.out.println("choose Kategori");
+                System.out.println("1. Story Book");
+                System.out.println("2. History Book");
+                System.out.println("3. Text Book");
+                System.out.print("choose Kategori : ");
+                int choose = scan.nextInt();
+                scan.nextLine();
+                String kategori = "";
+                switch (choose) {
+                    case 1:
+                        kategori = "Story";
                     break;
+                    case 2:
+                        kategori = "History";
+                    break;
+                    case 3:
+                        kategori = "Text";
+                    break;
+                    default:
+                        System.out.println("invalid option");
+                }
+                System.out.print("Masukkan judul : ");
+                String judul = scan.nextLine();
+                System.out.print("Masukkan penulis : ");
+                String penulis = scan.nextLine();
+                System.out.print("Masukkan stock : ");
+                int stock = scan.nextInt();
+                scan.nextLine();
+    
+                String bookId = generated();
+                switch (choose) {
+                    case 1:
+                        booklist.add(new StoryBook(judul, penulis, bookId, kategori, stock));
+                        input = false;
+                    break;
+                    case 2:
+                        booklist.add(new HistoryBook(judul, penulis, bookId, kategori, stock));
+                        input = false;
+                    break;
+                    case 3:
+                        booklist.add(new TextBook(judul, penulis, bookId, kategori, stock));
+                        input = false;
+                    break;
+                    default:
+                        System.out.println("invalid option");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
         System.out.println("berhasil ditambahkan");
@@ -270,5 +282,4 @@ public class Admin extends User{
             return false;
         }
     }
-
 }

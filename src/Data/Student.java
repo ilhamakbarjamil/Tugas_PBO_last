@@ -1,6 +1,7 @@
 package Data;
 
 import Books.Book;
+import Exception.IllegalAdminAccess;
 import Utama.Main;
 import anjay.sendEmailKembali;
 import anjay.sendEmailPinjam;
@@ -26,43 +27,48 @@ public class Student extends User{
 
     //pinjam buku
     public void pinjamBuku(){
-        boolean running = true;
-        while (running) {
-            displayBook();
-            System.out.println("Menu Pinjam Buku");
-            System.out.print("Masukkan BookId : ");
-            String BookId = scan.nextLine();
-            for(Book cek : booklist){
-                if(cek.getBookId().equals(BookId)){
-                    System.out.print("input jumlah buku yang akan dipinjam : ");
-                    int jumlahPinjamBuku = scan.nextInt();
-                    scan.nextLine();
-                    if(jumlahPinjamBuku > cek.getStock()){
-                        System.out.println("melebihi stock yang ada");
-                        return;
-                    }else{
-                        int durasiPinjam;
-                        do {
-                            System.out.print("durasi pinjaman (max 14 hari) : ");
-                            durasiPinjam = scan.nextInt();
+            boolean running = true;
+            while (running) {
+                try {
+                    displayBook();
+                    System.out.println("Menu Pinjam Buku");
+                    System.out.print("Masukkan BookId : ");
+                    String BookId = scan.nextLine();
+                    for(Book cek : booklist){
+                        if(cek.getBookId().equals(BookId)){
+                            System.out.print("input jumlah buku yang akan dipinjam : ");
+                            int jumlahPinjamBuku = scan.nextInt();
                             scan.nextLine();
-                            if(durasiPinjam > 14){
-                                System.out.println("melebihi batas maksimal");
-                            }else{
-                                cek.kurangStock(jumlahPinjamBuku);
-                                Book bukuBorowed = new Book(cek);
-                                bukuBorowed.setStock(jumlahPinjamBuku);
-                                bukuBorowed.setDurasi(durasiPinjam);
-                                bukuBorrowed.add(bukuBorowed);
-                                System.out.println("buku dengan Id "+BookId+" berhasil dipinjam");
-                                sendEmailPinjam.kirimEmail(this);
+                            if(jumlahPinjamBuku > cek.getStock()){
+                                System.out.println("melebihi stock yang ada");
                                 return;
+                            }else{
+                                int durasiPinjam;
+                                do {
+                                    System.out.print("durasi pinjaman (max 14 hari) : ");
+                                    durasiPinjam = scan.nextInt();
+                                    scan.nextLine();
+                                    if(durasiPinjam > 14){
+                                        System.out.println("melebihi batas maksimal");
+                                    }else{
+                                        cek.kurangStock(jumlahPinjamBuku);
+                                        Book bukuBorowed = new Book(cek);
+                                        bukuBorowed.setStock(jumlahPinjamBuku);
+                                        bukuBorowed.setDurasi(durasiPinjam);
+                                        bukuBorrowed.add(bukuBorowed);
+                                        System.out.println("buku dengan Id "+BookId+" berhasil dipinjam");
+                                        sendEmailPinjam.kirimEmail(this);
+                                        return;
+                                    }
+                                } while (durasiPinjam > 14);
                             }
-                        } while (durasiPinjam > 14);
+                        }
                     }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
-        }
+
     }    
 
     public static int jumlahkembali;
@@ -70,37 +76,41 @@ public class Student extends User{
     public void kembalikanBuku(){
         boolean kembali = true;
         while (kembali) {
-            bukuBorrowed();
-            System.out.print("Masukkan Id buku : ");
-            String Id = scan.nextLine();
-            
-            for(Book back : bukuBorrowed){
-                if(back.getBookId().equals(Id)){
-                    System.out.print("inputkan jumlah buku yang dikembalikan : ");
-                    jumlahkembali = scan.nextInt();
-                    scan.nextLine();
-
-                    if(jumlahkembali <= back.getStock()){
-                        for(Book tambah : booklist){
-                            back.setStock(back.getStock() - jumlahkembali);
-                            // tambah.tambahStock(jumlahkembali);
-                            tambah.setStock(jumlahkembali + tambah.getStock());
-                            System.out.println("buku berhasil dikembalikan");
-                            sendEmailKembali.kirimEmail(this);
-
-                            if(back.getStock() == 0){
-                                bukuBorrowed.remove(back);
+            try {
+                bukuBorrowed();
+                System.out.print("Masukkan Id buku : ");
+                String Id = scan.nextLine();
+                
+                for(Book back : bukuBorrowed){
+                    if(back.getBookId().equals(Id)){
+                        System.out.print("inputkan jumlah buku yang dikembalikan : ");
+                        jumlahkembali = scan.nextInt();
+                        scan.nextLine();
+    
+                        if(jumlahkembali <= back.getStock()){
+                            for(Book tambah : booklist){
+                                back.setStock(back.getStock() - jumlahkembali);
+                                // tambah.tambahStock(jumlahkembali);
+                                tambah.setStock(jumlahkembali + tambah.getStock());
+                                System.out.println("buku berhasil dikembalikan");
+                                sendEmailKembali.kirimEmail(this);
+    
+                                if(back.getStock() == 0){
+                                    bukuBorrowed.remove(back);
+                                }
+                                return;
                             }
-                            return;
+                        } 
+                        else{
+                            System.out.println("melebihi batas stok yang dipinjam");
                         }
-                    } 
-                    else{
-                        System.out.println("melebihi batas stok yang dipinjam");
+                    }else{
+                        System.out.println("BookId '"+Id+"' tidak ditemukan");
                     }
-                }else{
-                    System.out.println("BookId '"+Id+"' tidak ditemukan");
                 }
-            }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }                                               
         }
     }
 
@@ -130,36 +140,42 @@ public class Student extends User{
     public void menu() {
         boolean menu = true;
         while (menu) {
-            System.out.println("=== Menu Student");
-            System.out.println("1. Tampilkan informasi");
-            System.out.println("2. Tampilkan buku yang dipinjam");
-            System.out.println("3. Pinjam buku");
-            System.out.println("4. Kembalikan buku");
-            System.out.println("5. Logout");
-            System.out.print("choose option : ");
-            int choose = scan.nextInt();
-            scan.nextLine();
-            switch (choose) {
-                case 1:
-                    displayInformation();
-                break;
-                case 2:
-                    bukuBorrowed();
-                break;
-                case 3:
-                    pinjamBuku();
-                break;
-                case 4:
-                    kembalikanBuku();
-                break;
-                case 5:
-                    menu = false;
-                    Main.checkNim = false;
-                break;
-            
-                default:
-                    System.out.println("pilih yang sesuai");
+            try {
+                System.out.println("=== Menu Student");
+                System.out.println("1. Tampilkan informasi");
+                System.out.println("2. Tampilkan buku yang dipinjam");
+                System.out.println("3. Pinjam buku");
+                System.out.println("4. Kembalikan buku");
+                System.out.println("5. Logout");
+                System.out.print("choose option : ");
+                int choose = Integer.parseInt(scan.nextLine());
+                // scan.nextLine();
+                switch (choose) {
+                    case 1:
+                        displayInformation();
                     break;
+                    case 2:
+                        bukuBorrowed();
+                    break;
+                    case 3:
+                        pinjamBuku();
+                    break;
+                    case 4:
+                        kembalikanBuku();
+                    break;
+                    case 5:
+                        menu = false;
+                        Main.checkNim = false;
+                    break;
+                
+                    default:
+                        // System.out.println("pilih yang sesuai");
+                        throw new IllegalAdminAccess("pilih yang sesuai");
+                }
+            } catch (IllegalAdminAccess e) {
+                System.out.println(e.getMessage());
+            } catch(Exception e){
+                System.out.println(e.getMessage());
             }
         }
     }
