@@ -13,8 +13,8 @@ import Data.Student;
 // import Data.Student;
 
 public class sendEmailKembali {
-    public static void kirimEmail(String kirim){
-        Student student = new Student("", "", "", "", "");
+    public static void kirimEmail(Student student){
+        // Student student = new Student("", "", "", "", "");
         final String username = "ilhamakbarjamil8@gmail.com";
         final String password = "iycx ojhe cmmc hxqf";
 
@@ -34,7 +34,7 @@ public class sendEmailKembali {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(kirim));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(student.getEmail()));
             message.setSubject("Mengembalikan Buku");
             
             StringBuilder emailContent = new StringBuilder();

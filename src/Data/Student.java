@@ -86,7 +86,7 @@ public class Student extends User{
                             // tambah.tambahStock(jumlahkembali);
                             tambah.setStock(jumlahkembali + tambah.getStock());
                             System.out.println("buku berhasil dikembalikan");
-                            sendEmailKembali.kirimEmail(this.getEmail());
+                            sendEmailKembali.kirimEmail(this);
 
                             if(back.getStock() == 0){
                                 bukuBorrowed.remove(back);
