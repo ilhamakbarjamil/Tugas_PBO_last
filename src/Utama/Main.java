@@ -11,7 +11,6 @@ public class Main {
     public static ArrayList<Student> userlist = new ArrayList<>();
     Main login;
     public static void main(String[] args) {
-        //farhan yang edit
         //objek
         Scanner scan = new Scanner(System.in);
         Admin admin = new Admin();
@@ -34,7 +33,8 @@ public class Main {
                 int choose = Integer.parseInt(scan.nextLine());
                 switch (choose) {
                     case 1:
-                        admin.login();
+                        // admin.login();
+                        admin.menu();
                     break;
                     case 2:
                         main.inputNim(scan);

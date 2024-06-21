@@ -22,6 +22,8 @@ public class Student extends User{
         super(nama, nim, fakultas, jurusan, email);
     }
 
+    public Student(){}
+
     //pinjam buku
     public void pinjamBuku(){
         boolean running = true;
@@ -53,7 +55,7 @@ public class Student extends User{
                                 bukuBorowed.setDurasi(durasiPinjam);
                                 bukuBorrowed.add(bukuBorowed);
                                 System.out.println("buku dengan Id "+BookId+" berhasil dipinjam");
-                                sendEmailPinjam.kirimEmail(this.getEmail());
+                                sendEmailPinjam.kirimEmail(this);
                                 return;
                             }
                         } while (durasiPinjam > 14);
@@ -63,6 +65,7 @@ public class Student extends User{
         }
     }    
 
+    public static int jumlahkembali;
     //kembalikan buku
     public void kembalikanBuku(){
         boolean kembali = true;
@@ -74,7 +77,7 @@ public class Student extends User{
             for(Book back : bukuBorrowed){
                 if(back.getBookId().equals(Id)){
                     System.out.print("inputkan jumlah buku yang dikembalikan : ");
-                    int jumlahkembali = scan.nextInt();
+                    jumlahkembali = scan.nextInt();
                     scan.nextLine();
 
                     if(jumlahkembali <= back.getStock()){
@@ -119,6 +122,9 @@ public class Student extends User{
         }
     }
 
+    public ArrayList<Book> getBukuBorrowed() {
+        return bukuBorrowed;
+    }
 
     @Override
     public void menu() {

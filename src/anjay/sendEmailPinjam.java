@@ -5,11 +5,14 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+import Books.Book;
+import Data.Student;
+
 // import Data.Student;
 
 public class sendEmailPinjam {
-    public static void kirimEmail(String kirim){
-
+    public static void kirimEmail(Student student){
+        // Student student = new Student("", "", "", "", "");
         final String username = "ilhamakbarjamil8@gmail.com";
         final String password = "iycx ojhe cmmc hxqf";
 
@@ -29,12 +32,27 @@ public class sendEmailPinjam {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(kirim));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(student.getEmail()));
             message.setSubject("Pinjam Buku");
-            message.setText("Buku yang anda pinjam");
-            
+        
+            StringBuilder emailContent = new StringBuilder();
+            emailContent.append("----------------------------------------------------------------------\n");
+            emailContent.append("Buku yang diPinjam\n");
+            emailContent.append("----------------------------------------------------------------------\n");
+            for(Book book : student.getBukuBorrowed()){
+                emailContent.append("Judul\t  : "+book.getJudul()+"\n");
+                emailContent.append("Author\t : "+book.getAuthor()+"\n");
+                emailContent.append("BookId\t : "+book.getBookId()+"\n");
+                emailContent.append("Kategori: "+book.getCategory()+"\n");
+                emailContent.append("Jumlah\t : "+book.getStock()+"\n");
+                emailContent.append("durasi\t : "+book.getDurasi()+" hari\n");
+                emailContent.append("\n");
+            }
+            emailContent.append("----------------------------------------------------------------------");
 
+            message.setText(emailContent.toString());
             Transport.send(message);
+            
             System.out.println("email berhasil dikirim");
 
         } catch (MessagingException e) {
