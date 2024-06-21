@@ -7,10 +7,10 @@ import javax.mail.internet.*;
 
 import Books.Book;
 import Data.Student;
-
+// import Data.User;
 // import Data.Student;
 
-public class sendEmailPinjam {
+public class emailSanksi {
     public static void kirimEmail(Student student){
         // Student student = new Student("", "", "", "", "");
         final String username = "ilhamakbarjamil8@gmail.com";
@@ -33,27 +33,25 @@ public class sendEmailPinjam {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(student.getEmail()));
-            message.setSubject("Pinjam Buku");
-        
+            message.setSubject("Sanksi");
+            
             StringBuilder emailContent = new StringBuilder();
-            emailContent.append("----------------------------------------------------------------------\n");
-            emailContent.append("Buku yang diPinjam\n");
-            emailContent.append("----------------------------------------------------------------------\n");
+            emailContent.append("Anda terlambat mengembalikkan buku\n");
+
             for(Book book : student.getBukuBorrowed()){
                 emailContent.append("Judul\t: "+book.getJudul()+"\n");
                 emailContent.append("Author\t: "+book.getAuthor()+"\n");
                 emailContent.append("BookId\t: "+book.getBookId()+"\n");
                 emailContent.append("Kategori\t: "+book.getCategory()+"\n");
-                emailContent.append("Jumlah\t: "+book.getStock()+"\n");
-                emailContent.append("durasi\t: "+book.getDurasi()+" hari\n");
-                emailContent.append("Tanggal\t: "+book.getTanggalPinjam());
-                emailContent.append("\n");
+                emailContent.append("Jumlah\t: "+Student.jumlahkembali+"\n");
             }
             emailContent.append("----------------------------------------------------------------------");
+            // for(Book display : User.booklist){
 
+            // }
+            
             message.setText(emailContent.toString());
             Transport.send(message);
-            
             System.out.println("email berhasil dikirim");
 
         } catch (MessagingException e) {

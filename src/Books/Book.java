@@ -24,8 +24,6 @@ public class Book {
         this.stock = book.stock;
     }
 
-    
-
     public String getJudul() {
         return judul;
     }

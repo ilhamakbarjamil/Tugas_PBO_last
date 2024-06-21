@@ -46,8 +46,8 @@ public class Student extends User{
                                 int durasiPinjam;
                                 do {
                                     System.out.print("durasi pinjaman (max 14 hari) : ");
-                                    durasiPinjam = scan.nextInt();
-                                    scan.nextLine();
+                                    durasiPinjam = Integer.parseInt(scan.nextLine());
+                                    // scan.nextLine();
                                     if(durasiPinjam > 14){
                                         System.out.println("melebihi batas maksimal");
                                     }else{
@@ -56,6 +56,7 @@ public class Student extends User{
                                         bukuBorowed.setStock(jumlahPinjamBuku);
                                         bukuBorowed.setDurasi(durasiPinjam);
                                         bukuBorrowed.add(bukuBorowed);
+                                        bukuBorowed.setTanggalPinjam(new Date());
                                         System.out.println("buku dengan Id "+BookId+" berhasil dipinjam");
                                         sendEmailPinjam.kirimEmail(this);
                                         return;
@@ -98,6 +99,14 @@ public class Student extends User{
                                 if(back.getStock() == 0){
                                     bukuBorrowed.remove(back);
                                 }
+
+                                Date tanggalKembali = new Date();
+                                long selisih = selisihHari(back.getTanggalPinjam(), tanggalKembali);
+                                if(selisih > back.getDurasi()){
+                                    long keterlambatan = selisih - back.getDurasi();
+                                    System.out.println("anda terlambat mengembalikan selama "+keterlambatan+" hari");
+                                    beriSanksi(keterlambatan);
+                                }
                                 return;
                             }
                         } 
@@ -114,6 +123,16 @@ public class Student extends User{
         }
     }
 
+    private long selisihHari(Date tanggalPinjam, Date tanggalKemabali){
+        long selisih = tanggalKemabali.getTime() - tanggalPinjam.getTime();
+        return selisih / (1000*60*60*24);
+    }
+
+    private void beriSanksi(long keterlambatan){
+        long denda = 1000;
+        long totalDenda = keterlambatan * denda;
+        System.out.println("total denda anda : "+totalDenda);
+    }
     
 
     //tampilkan buku yang sedang dipinjam
