@@ -1,9 +1,12 @@
 package Books;
 
+import java.util.Date;
+
 public class Book {
     String judul, BookId, author, category;
     int stock;
     int durasi;
+    private Date tanggalPinjam;
 
     public Book(String judul,  String author, String bookId, String category, int stock){
         this.judul = judul;
@@ -20,6 +23,8 @@ public class Book {
         this.category = book.category;
         this.stock = book.stock;
     }
+
+    
 
     public String getJudul() {
         return judul;
@@ -79,5 +84,13 @@ public class Book {
         if(jumlah <= stock){
             stock += jumlah;
         }
+    }
+
+    public Date getTanggalPinjam() {
+        return tanggalPinjam;
+    }
+
+    public void setTanggalPinjam(Date tanggalPinjam) {
+        this.tanggalPinjam = tanggalPinjam;
     }
 }
