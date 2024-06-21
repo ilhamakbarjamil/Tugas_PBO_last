@@ -42,11 +42,11 @@ public class sendEmailKembali {
             emailContent.append("Buku yang dikembalikan\n");
             emailContent.append("----------------------------------------------------------------------\n");
             for(Book book : student.getBukuBorrowed()){
-                emailContent.append("Judul\t  : "+book.getJudul()+"\n");
-                emailContent.append("Author\t : "+book.getAuthor()+"\n");
-                emailContent.append("BookId\t : "+book.getBookId()+"\n");
-                emailContent.append("Kategori: "+book.getCategory()+"\n");
-                emailContent.append("Jumlah\t : "+Student.jumlahkembali+"\n");
+                emailContent.append("Judul\t: "+book.getJudul()+"\n");
+                emailContent.append("Author\t: "+book.getAuthor()+"\n");
+                emailContent.append("BookId\t: "+book.getBookId()+"\n");
+                emailContent.append("Kategori\t: "+book.getCategory()+"\n");
+                emailContent.append("Jumlah\t: "+Student.jumlahkembali+"\n");
             }
             emailContent.append("----------------------------------------------------------------------");
             // for(Book display : User.booklist){
