@@ -6,8 +6,24 @@ import java.util.Scanner;
 import Books.Book;
 // import Utama.Main;
 import Util.iMenu;
+import javafx.application.Application;
+// import javafx.collections.FXCollections;
+// import javafx.collections.ObservableList;
+// import javafx.scene.Scene;
+// import javafx.scene.control.Button;
+// import javafx.scene.control.TableColumn;
+// import javafx.scene.control.TableView;
+// import javafx.scene.control.cell.PropertyValueFactory;
+// import javafx.scene.layout.VBox;
+// import javafx.scene.control.Button;
+// import javafx.scene.control.Label;
 //ini farhan yang edit
-public class User implements iMenu{
+import javafx.stage.Stage;
+public class User extends Application implements iMenu{
+
+    public static void main(String[] args) {
+        launch(args);
+    }
     
     //objek
     public static ArrayList <Book> booklist = new ArrayList<>();
@@ -103,5 +119,10 @@ public class User implements iMenu{
     @Override
     public void menu() {
        
+    }
+
+    @Override
+    public void start(Stage arg0) throws Exception {
+        
     }
 }

@@ -1,9 +1,22 @@
 {
     "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "bin",
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar"
-    ],
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx.base.jar",
+            "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx.controls.jar",
+            "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx.fxml.jar",
+            "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx.graphics.jar",
+            "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx.media.jar",
+            "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx.swing.jar",
+            "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx.web.jar",
+            "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx-swt.jar"
+        ],
+        "exclude": [
+            "lib/javafx-swt.jar"
+        ]
+    },
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#1a1a1a",
         "activityBar.background": "#1a1a1a",

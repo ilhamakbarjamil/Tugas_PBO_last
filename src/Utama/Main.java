@@ -6,11 +6,27 @@ import Books.TextBook;
 import Data.Admin;
 import Data.Student;
 import Exception.IllegalAdminAccess;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+// import javafx.scene.control.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+// import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class Main {
+public class Main extends Application{
     public static ArrayList<Student> userlist = new ArrayList<>();
+    Admin admin = new Admin();
+    public static boolean checkNim = true;
     Main login;
     public static void main(String[] args) {
+        launch(args);
         //objek
         Scanner scan = new Scanner(System.in);
         Admin admin = new Admin();
@@ -55,7 +71,7 @@ public class Main {
         scan.close();
     }
 
-    public static boolean checkNim = true;
+    
     public void inputNim(Scanner scan){
         checkNim = true;
         while (checkNim){
@@ -76,4 +92,116 @@ public class Main {
             }
         }
     }
+    
+    
+
+    @Override
+    public void start(Stage arg0) throws Exception {
+       Mainmenu(arg0);
+    }
+
+    public void Mainmenu(Stage stage){
+        Label label = new Label("Library Menu");
+        
+        Button adminBtn = new Button("Login as Admin");
+        Button studentBtn = new Button("Login as Student");
+        Button exitBtn = new Button("Exit");
+
+        adminBtn.setOnAction(e -> loginAdmin(stage));
+        studentBtn.setOnAction(e -> checkNim(stage));
+        exitBtn.setOnAction(e -> System.exit(0));
+
+        Label output = new Label();
+        VBox vbox = new VBox(label,adminBtn, studentBtn, exitBtn, output);
+        vbox.setPadding(new Insets(10));
+        vbox.setSpacing(15);
+
+        Scene scene = new Scene(vbox, 300, 300);
+        stage.setTitle("Perpustakaan");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void loginAdmin(Stage stage){
+        Label username = new Label("Username");
+        TextField usernameField = new TextField();
+        usernameField.setPromptText("masukkan username");
+
+        Label password = new Label("Password");
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText("masukkan password");
+
+        Button submitBtn = new Button("Submit");
+
+        submitBtn.setOnAction(event ->{
+            String user = usernameField.getText();
+            String pass = passwordField.getText();
+            if(user.equalsIgnoreCase("admin") && pass.equalsIgnoreCase("admin123")){
+                admin.adminMenu(stage);
+            }else{
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Tidak Sesuai");
+                alert.setHeaderText("username and password invalid");
+                alert.setContentText("silahkan coba lagi");
+                alert.showAndWait();
+            }
+        });
+
+        VBox vbox = new VBox(username,usernameField,password,passwordField,submitBtn);
+        Scene scene = new Scene(vbox, 400, 400);
+        stage.setTitle("Login Admin");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void checkNim(Stage stage){
+        Label label = new Label("Masukkan Nim (99 back) : ");
+        TextField nimField = new TextField();
+        nimField.setPromptText("Masukkan nim");
+        Button submitBtn = new Button("Submit");
+        Button backBtn = new Button("Back");
+    
+        submitBtn.setOnAction(event -> {
+            String nim = nimField.getText();
+    
+            if (nim.equalsIgnoreCase("99")) {
+                Mainmenu(stage);
+            } else if (nim.length() != 15) {
+               
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText("Nim kurang dari 15 karakter");
+                alert.setContentText("Silahkan coba lagi");
+                alert.showAndWait();
+            } else {
+                boolean found = false;
+                for (Student cek : userlist) {
+                    if (cek.getNim().equals(nim)) {
+                        found = true;
+                        
+                        break;
+                    }
+                }
+                if (!found) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Nim tidak ditemukan");
+                    alert.setContentText("Silahkan coba lagi");
+                    alert.showAndWait();
+                }
+            }
+        });
+    
+        backBtn.setOnAction(event -> Mainmenu(stage));
+    
+        VBox vbox = new VBox(label, nimField, submitBtn, backBtn);
+        vbox.setPadding(new Insets(10));
+        vbox.setSpacing(15);
+    
+        Scene scene = new Scene(vbox, 400, 400);
+        stage.setTitle("Check Nim");
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }
