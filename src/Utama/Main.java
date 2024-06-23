@@ -5,6 +5,8 @@ import java.util.Scanner;
 import Books.TextBook;
 import Data.Admin;
 import Data.Student;
+// import Data.StudentController;
+// import Data.User;
 import Exception.IllegalAdminAccess;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -16,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.HBox;
 // import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -97,6 +100,10 @@ public class Main extends Application{
 
     @Override
     public void start(Stage arg0) throws Exception {
+        userlist.add(new Student("Farhan Fauzi", "202310370311100", "Teknik", "Informatika", "farhan.uzie77@gmail.com"));
+        userlist.add(new Student("Ilham Akbar Jamil", "202310370311085", "Teknik", "Informatika", "ilhamakbarjamil8@gmail.com"));
+        admin.inputBook(new TextBook("babi", "akbar", "1718381338657-88", "Text", 10));
+
        Mainmenu(arg0);
     }
 
@@ -147,7 +154,8 @@ public class Main extends Application{
             }
         });
 
-        VBox vbox = new VBox(username,usernameField,password,passwordField,submitBtn);
+        VBox vbox = new VBox(10, username,usernameField,password,passwordField,submitBtn);
+        vbox.setPadding(new Insets(15));
         Scene scene = new Scene(vbox, 400, 400);
         stage.setTitle("Login Admin");
         stage.setScene(scene);
@@ -160,48 +168,44 @@ public class Main extends Application{
         nimField.setPromptText("Masukkan nim");
         Button submitBtn = new Button("Submit");
         Button backBtn = new Button("Back");
-    
-        submitBtn.setOnAction(event -> {
+        
+        submitBtn.setOnAction(event->{
             String nim = nimField.getText();
-    
-            if (nim.equalsIgnoreCase("99")) {
-                Mainmenu(stage);
-            } else if (nim.length() != 15) {
-               
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Warning");
-                alert.setHeaderText("Nim kurang dari 15 karakter");
-                alert.setContentText("Silahkan coba lagi");
-                alert.showAndWait();
-            } else {
-                boolean found = false;
-                for (Student cek : userlist) {
-                    if (cek.getNim().equals(nim)) {
-                        found = true;
-                        
-                        break;
-                    }
-                }
-                if (!found) {
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Nim tidak ditemukan");
-                    alert.setContentText("Silahkan coba lagi");
+            boolean found = true;
+            for(Student cek : userlist){
+                
+                if(cek.getNim().equals(nim)){
+                    found = true;
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Login berhasil");
+                    alert.setHeaderText("Welcome "+cek.getNama());
+                    // alert.setContentText(cek.getNama());
                     alert.showAndWait();
+                    cek.menuStudent(stage);
                 }
             }
+            if(!found){
+                found = false;
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Login gagal");
+                alert.setHeaderText("Nim tidak ditemukan");
+                alert.setContentText("silahkan coba lagi");
+                alert.showAndWait();
+            }
+            nimField.clear();
+            
         });
-    
-        backBtn.setOnAction(event -> Mainmenu(stage));
-    
-        VBox vbox = new VBox(label, nimField, submitBtn, backBtn);
-        vbox.setPadding(new Insets(10));
-        vbox.setSpacing(15);
-    
+
+        backBtn.setOnAction(event->{
+            Mainmenu(stage);
+        });
+
+        HBox hbox = new HBox(5,submitBtn,backBtn);
+        VBox vbox = new VBox(10,label,nimField,hbox);
+        vbox.setPadding(new Insets(15));
         Scene scene = new Scene(vbox, 400, 400);
-        stage.setTitle("Check Nim");
+        stage.setTitle("Login student");
         stage.setScene(scene);
         stage.show();
     }
-
 }

@@ -5,8 +5,28 @@ import java.util.Scanner;
 
 import Books.Book;
 // import Utama.Main;
+// import Utama.Main;
 import Util.iMenu;
 import javafx.application.Application;
+// import javafx.application.Application;
+// import javafx.collections.FXCollections;
+// import javafx.collections.ObservableList;
+// import javafx.scene.Scene;
+// import javafx.scene.control.Alert;
+// import javafx.scene.control.Button;
+// import javafx.scene.control.TableColumn;
+// import javafx.scene.control.TableView;
+// import javafx.scene.control.Alert.AlertType;
+// import javafx.scene.control.cell.PropertyValueFactory;
+// import javafx.scene.layout.VBox;
+// import javafx.collections.FXCollections;
+// import javafx.collections.ObservableList;
+// import javafx.scene.Scene;
+// import javafx.scene.control.Button;
+// import javafx.scene.control.TableColumn;
+// import javafx.scene.control.TableView;
+// import javafx.scene.control.cell.PropertyValueFactory;
+// import javafx.scene.layout.VBox;
 // import javafx.collections.FXCollections;
 // import javafx.collections.ObservableList;
 // import javafx.scene.Scene;
@@ -24,10 +44,22 @@ public class User extends Application implements iMenu{
     public static void main(String[] args) {
         launch(args);
     }
+
+    @Override
+    public void start(Stage arg0) throws Exception {
+        // TODO Auto-generated method stub
+        
+    }
     
     //objek
     public static ArrayList <Book> booklist = new ArrayList<>();
     Scanner scan = new Scanner(System.in);
+
+    
+    public static ArrayList<Book> getBooklist() {
+        return booklist;
+    }
+
 
     protected String nama;
     protected String nim;
@@ -121,8 +153,58 @@ public class User extends Application implements iMenu{
        
     }
 
-    @Override
-    public void start(Stage arg0) throws Exception {
-        
-    }
+
+
+    // public void displayUserInformation(Stage stage) {
+    //     Alert alert = new Alert(AlertType.INFORMATION);
+    //     alert.setTitle("data Information");
+    //     alert.setHeaderText("Information");
+    //     alert.setContentText(nama);
+    //     alert.setContentText(nim);
+    //     alert.setContentText(fakultas);
+    //     alert.setContentText(jurusan);
+    //     alert.setContentText(email);
+    //     alert.showAndWait();
+    // }
 }
+
+    // protected void displayInformation(Stage stage){
+    //     TableView<Student> table = new TableView<>();
+
+    //     TableColumn<Student, String > namaColumn = new TableColumn<>("Nama");
+    //     namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
+
+    //     TableColumn<Student, String> nimColumn = new TableColumn<>("Nim");
+    //     nimColumn.setCellValueFactory(new PropertyValueFactory<>("nim"));
+
+    //     TableColumn<Student, String> fakultasColumn = new TableColumn<>("Fakultas");
+    //     fakultasColumn.setCellValueFactory(new PropertyValueFactory<>("fakultas"));
+
+    //     TableColumn<Student, String> jurusanColumn = new TableColumn<>("Jurusan");
+    //     jurusanColumn.setCellValueFactory(new PropertyValueFactory<>("jurusan"));
+
+    //     TableColumn<Student, String> emailColumn = new TableColumn<>("Email");
+    //     emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+    //     Button backBtn = new Button("back");
+
+    //     backBtn.setOnAction(event->{
+            
+    //     });
+
+    //     table.getColumns().add(namaColumn);
+    //     table.getColumns().add(nimColumn);
+    //     table.getColumns().add(fakultasColumn);
+    //     table.getColumns().add(jurusanColumn);
+    //     table.getColumns().add(emailColumn);
+
+    //     ObservableList<Student> userlist = FXCollections.observableArrayList(Main.userlist);
+    //     table.setItems(userlist);
+
+    //     VBox vBox = new VBox(table, backBtn);
+    //     Scene scene = new Scene(vBox, 600, 400);
+    //     stage.setTitle("Daftar Student");
+    //     stage.setScene(scene);
+    //     stage.show();
+    // }
+

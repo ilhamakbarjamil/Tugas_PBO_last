@@ -3,6 +3,7 @@ package Data;
 // import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+// import java.util.ResourceBundle.Control;
 
 import Books.Book;
 // import Books.Book;
@@ -19,11 +20,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+// import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 // import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -314,6 +317,7 @@ public class Admin extends User{
         Button addbookBtn = new Button("add Book");
         Button cekStudentBtn = new Button("cek daftar Student");
         Button cekBookBtn = new Button("cek daftar Buku");
+        Button backButton = new Button("back");
 
         addStudentBtn.setOnAction(event->{
             addStudent(stage);
@@ -331,7 +335,12 @@ public class Admin extends User{
             displayBooks(stage);
         });
 
-        VBox vbox = new VBox(label,addStudentBtn,addbookBtn,cekStudentBtn,cekBookBtn);
+        backButton.setOnAction(event->{
+            Main main = new Main();
+            main.Mainmenu(stage);
+        });
+
+        VBox vbox = new VBox(label,addStudentBtn,addbookBtn,cekStudentBtn,cekBookBtn, backButton);
         Scene scene = new Scene(vbox, 400, 400);
         stage.setTitle("Admin menu");
         stage.setScene(scene);
@@ -339,7 +348,7 @@ public class Admin extends User{
     }
 
     public void addStudent(Stage stage){
-        Label label = new Label("Menu Tambah Student");
+        // Label label = new Label("Menu Tambah Student");
         Label namaLabel = new Label("Masukkan Nama");
         TextField namaField = new TextField();
         namaField.setPromptText("masukkan nama mahasiswa");
@@ -370,53 +379,74 @@ public class Admin extends User{
             String jurusan = jurusanField.getText();
             String email = emailField.getText();
 
+            boolean isValid = true;
+
             if(!nama.matches("^[a-zA-Z\\s]+$")){
+                isValid = false;
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Nama invlid");
                 alert.setHeaderText("Nama tidak boleh angka");
                 alert.show();
             }
             if(nim.length() != 15){
+                isValid = false;
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Nim invalid");
                 alert.setHeaderText("Nim tidak 15 karakter");
                 alert.show();
             }
+            for(Student cek : Main.userlist){
+                if(cek.getNim().equals(nim)){
+                    isValid = false;
+                    Alert alertnim = new Alert(AlertType.WARNING);
+                    alertnim.setHeaderText("Nim sudah ada");
+                    alertnim.show();
+                }
+            }
             if(!fakultas.matches("^[a-zA-Z\\s]+$")){
+                isValid = false;
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Fakultas invlid");
                 alert.setHeaderText("fakultas tidak boleh angka");
                 alert.show();
             }
             if(!jurusan.matches("^[a-zA-Z\\s]+$")){
+                isValid = false;
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Jurusan invlid");
                 alert.setHeaderText("jurusan tidak boleh angka");
                 alert.show();
             }
             if(!email.contains("@gmail.com")){
+                isValid = false;
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Email invalid");
                 alert.setHeaderText("email tidak sesuai");
                 alert.setContentText("harus ada @gmail.com");
                 alert.showAndWait();
             }
-            Student student = new Student(nama, nim, fakultas, jurusan, email);
-            Main.userlist.add(student);
-
-        namaField.clear();
-        nimField.clear();
-        fakultasField.clear();
-        jurusanField.clear();
-        emailField.clear();
+            if(isValid){
+                Student student = new Student(nama, nim, fakultas, jurusan, email);
+                Main.userlist.add(student);
+    
+                namaField.clear();
+                nimField.clear();
+                fakultasField.clear();
+                jurusanField.clear();
+                emailField.clear();
+                showAlert(AlertType.INFORMATION, "berhasil", "berhasil ditambahkan");
+            }
         });
 
         backBtn.setOnAction(event->{
             adminMenu(stage);
         });
 
-        VBox vbox = new VBox(label,namaLabel,namaField,nimLabel,nimField,fakultasLabel,fakultasField,jurusanLabel,jurusanField,emaiLabel,emailField,submitBtn,backBtn);
-        Scene scene = new Scene(vbox, 400, 400);
+        HBox hbox = new HBox(5,submitBtn,backBtn);
+
+        VBox vbox = new VBox(10,namaLabel,namaField,nimLabel,nimField,fakultasLabel,fakultasField,jurusanLabel,jurusanField,emaiLabel,emailField, hbox);
+        vbox.setPadding(new Insets(15));
+        Scene scene = new Scene(vbox, 350, 400);
         stage.setTitle("Input data");
         stage.setScene(scene);
         stage.show();
@@ -443,9 +473,12 @@ public class Admin extends User{
         String author = authorTxt.getText();
         String stockStr = stockTxt.getText();
         String category = categoryTxt.getText();
+
+        boolean isValid = true;
         
         // Validation
         if (title.isEmpty() || author.isEmpty() || stockStr.isEmpty() || category.isEmpty()) {
+            isValid = false;
             showAlert(Alert.AlertType.ERROR, "Form Error!", "Please enter all details");
             return;
         }
@@ -454,6 +487,7 @@ public class Admin extends User{
         try {
             stock = Integer.parseInt(stockStr);
         } catch (NumberFormatException e) {
+            isValid = false;
             showAlert(Alert.AlertType.ERROR, "Form Error!", "Stock must be a number");
             return;
         }
@@ -472,26 +506,27 @@ public class Admin extends User{
                 booklist.add(new TextBook(title, author, bookId, category, stock));
                 break;
             default:
+                isValid = false;
                 showAlert(Alert.AlertType.ERROR, "Form Error!", "Invalid category. Use 'story', 'history', or 'text'.");
                 return;
         }
 
-        // Clear the form fields
-        titleTxt.clear();
-        authorTxt.clear();
-        stockTxt.clear();
-        categoryTxt.clear();
-
-        // Show success message
-        showAlert(Alert.AlertType.INFORMATION, "Success", "Book added successfully");
+        if(isValid){
+            titleTxt.clear();
+            authorTxt.clear();
+            stockTxt.clear();
+            categoryTxt.clear();
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Book added successfully");
+        }
     });
 
     // Button to go back to the admin menu
     Button backBtn = new Button("Back");
     backBtn.setOnAction(event -> adminMenu(stage));
 
+    HBox hbox = new HBox(5,addBtn,backBtn);
     // Layout for the form
-    VBox vbox = new VBox(10, titleLbl, titleTxt, authorLbl, authorTxt, stockLbl, stockTxt, categoryLbl, categoryTxt, addBtn, backBtn);
+    VBox vbox = new VBox(10, titleLbl, titleTxt, authorLbl, authorTxt, stockLbl, stockTxt, categoryLbl, categoryTxt, hbox);
     vbox.setPadding(new Insets(10));
 
     // Set the scene and show the stage
@@ -501,53 +536,12 @@ public class Admin extends User{
     stage.show();
 }
 
-private void showAlert(Alert.AlertType alertType, String title, String message) {
-    Alert alert = new Alert(alertType);
-    alert.setTitle(title);
-    alert.setContentText(message);
-    alert.showAndWait();
-}
-
-
-    //     public void displayBook(Stage stage){
-    //     // Admin admin = new Admin();
-    //     TableView<Book> table = new TableView<>();
-
-    //     TableColumn<Book, String> judColumn = new TableColumn<>("Judul");
-    //     judColumn.setCellValueFactory(new PropertyValueFactory<>("judul"));
-
-    //     TableColumn<Book, String> penulisColumn = new TableColumn<>("Author");
-    //     penulisColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
-
-    //     TableColumn<Book, String> BookIdColumn = new TableColumn<>("BookId");
-    //     BookIdColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
-
-    //     TableColumn<Book, String> jumlahColumn = new TableColumn<>("Stock");
-    //     jumlahColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
-
-    //     TableColumn<Book, String> kategoriColumn = new TableColumn<>("Kategori");
-    //     kategoriColumn.setCellValueFactory(new PropertyValueFactory<>("kategori"));
-
-    //     Button backBtn = new Button("back");
-    //     backBtn.setOnAction(event ->{
-    //         adminMenu(stage);
-    //     });
-
-    //     table.getColumns().add(judColumn);
-    //     table.getColumns().add(penulisColumn);
-    //     table.getColumns().add(BookIdColumn);
-    //     table.getColumns().add(jumlahColumn);
-    //     table.getColumns().add(kategoriColumn);
-
-    //     ObservableList<Book> Booklist = FXCollections.observableArrayList(booklist);
-    //     table.setItems(Booklist);
-
-    //     VBox vbox = new VBox(table,backBtn);
-    //     Scene scene = new Scene(vbox, 600, 400);
-    //     stage.setTitle("Daftar Buku");
-    //     stage.setScene(scene);
-    //     stage.show();
-    // }
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     public void displaystudent(Stage stage){
         TableView<Student> table = new TableView<>();
@@ -622,6 +616,51 @@ private void showAlert(Alert.AlertType alertType, String title, String message) 
         table.setItems(bookList);
     
         VBox vbox = new VBox(table, backBtn);
+        Scene scene = new Scene(vbox, 600, 400);
+        stage.setTitle("Daftar Buku");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void displayBooksController(Stage stage) {
+        TableView<Book> table = new TableView<>();
+    
+        TableColumn<Book, String> judulColumn = new TableColumn<>("Judul");
+        judulColumn.setCellValueFactory(new PropertyValueFactory<>("judul"));
+    
+        TableColumn<Book, String> penulisColumn = new TableColumn<>("Author");
+        penulisColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+    
+        TableColumn<Book, String> bookIdColumn = new TableColumn<>("BookId");
+        bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
+    
+        TableColumn<Book, Integer> stockColumn = new TableColumn<>("Stock");
+        stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+    
+        TableColumn<Book, String> categoryColumn = new TableColumn<>("Kategori");
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category")); 
+    
+        Button pinjamButton = new Button("pinjam");
+        Button backBtn = new Button("Back");
+        backBtn.setOnAction(event -> {
+            
+        });
+
+        pinjamButton.setOnAction(event->{
+            
+        });
+
+    
+        table.getColumns().add(judulColumn);
+        table.getColumns().add(penulisColumn);
+        table.getColumns().add(bookIdColumn);
+        table.getColumns().add(stockColumn);
+        table.getColumns().add(categoryColumn);
+    
+        ObservableList<Book> bookList = FXCollections.observableArrayList(booklist);
+        table.setItems(bookList);
+    
+        VBox vbox = new VBox(table, backBtn, pinjamButton);
         Scene scene = new Scene(vbox, 600, 400);
         stage.setTitle("Daftar Buku");
         stage.setScene(scene);

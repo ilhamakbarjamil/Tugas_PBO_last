@@ -7,6 +7,21 @@
 
         {
             "type": "java",
+            "name": "StudentController",
+            "request": "launch",
+            "mainClass": "Data.StudentController",
+            "projectName": "perpustakaan_8eb74cb0",
+            "vmArgs": "--module-path \"C:/Users/Ilham Akbar Jamil/OneDrive/Documents/javafx-sdk-21.0.3/lib\" --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
+            "name": "Student",
+            "request": "launch",
+            "mainClass": "Data.Student",
+            "projectName": "perpustakaan_8eb74cb0"
+        },
+        {
+            "type": "java",
             "name": "User",
             "request": "launch",
             "mainClass": "Data.User",

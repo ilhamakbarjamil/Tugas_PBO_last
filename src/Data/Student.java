@@ -5,6 +5,31 @@ import Exception.IllegalAdminAccess;
 import Utama.Main;
 import anjay.sendEmailKembali;
 import anjay.sendEmailPinjam;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+// import javafx.scene.Scene;
+// import javafx.scene.control.Alert;
+// import javafx.scene.control.Button;
+// import javafx.scene.control.Label;
+// import javafx.scene.control.Alert.AlertType;
+// import javafx.scene.layout.VBox;
+// import javafx.stage.Stage;
+// import javafx.scene.Scene;
+// import javafx.scene.control.Alert;
+// import javafx.scene.control.Alert.AlertType;
+// import javafx.scene.control.Button;
+// import javafx.scene.control.Label;
+// import javafx.scene.control.TextField;
+// import javafx.scene.layout.VBox;
+// import javafx.stage.Stage;
+import javafx.stage.Stage;
 
 import java.util.*;
 
@@ -13,17 +38,165 @@ public class Student extends User{
     //objek
     private ArrayList<Book> bukuBorrowed = new ArrayList<>();
 
-    
-    // protected String nama;
-    // protected String nim;
-    // protected String fakultas;
-    // protected String jurusan;
-
     public Student(String nama, String nim, String fakultas, String jurusan, String email){
         super(nama, nim, fakultas, jurusan, email);
     }
 
     public Student(){}
+
+
+    public void menuStudent(Stage stage) {
+        Label menuLabel = new Label("Menu Student");
+        Button pinjamButton = new Button("Pinjam Buku");
+        Button returButton = new Button("Kembalikan Buku");
+        Button logoutButton = new Button("Logout");
+
+        pinjamButton.setOnAction(event->{
+            pinjamBuku(stage);
+        });
+
+        returButton.setOnAction(event->{
+            kembalikanBuku(stage);
+        });
+
+        logoutButton.setOnAction(event->{
+            Main mein = new Main();
+            mein.Mainmenu(stage);
+        });
+
+        VBox vBox = new VBox(menuLabel,pinjamButton,returButton,logoutButton);
+        vBox.setSpacing(10);
+        Scene scene = new Scene(vBox, 400, 400);
+        stage.setTitle("Menu Student");
+        stage.setScene(scene);
+        stage.show();
+        
+    }
+
+    private void pinjamBuku(Stage stage){
+        Label juduLabel = new Label("Judul atau BookId");
+        TextField juduField = new TextField();
+
+        Label jumlahLabel = new Label("Jumlah");
+        TextField jumlahField = new TextField();
+
+        Label durasiLabel = new Label("Durasi pinjam (Max 14 hari)");
+        TextField durasField = new TextField();
+
+        Button submiButton = new Button("submit");
+        Button exitButton = new Button("exit");
+
+        submiButton.setOnAction(event->{
+            try {
+                String judul = juduField.getText();
+                int jumlah = Integer.parseInt(jumlahField.getText());
+                int durasi = Integer.parseInt(durasField.getText());
+                boolean isValid = true;            
+    
+                for(Book cek : booklist){
+                    if(judul.equals(cek.getJudul()) || judul.equals(cek.getBookId())){
+                        isValid = true;
+                        Alert alertcek = new Alert(AlertType.INFORMATION);
+                        alertcek.setHeaderText("Buku ditemukan");
+                        alertcek.showAndWait();
+                        if(jumlah <= cek.getStock()){
+                            isValid = true;
+                            // Alert alertjumlah = new Alert(AlertType.INFORMATION);
+                            // alertcek.setHeaderText("Peminjaman dalam jumlah wajar");
+                            // alertcek.showAndWait();
+                            if(durasi <= 14){
+                                isValid = true;
+                                cek.kurangStock(jumlah);
+                                Book bukudipinjam = new Book(cek);
+                                bukudipinjam.setStock(jumlah);
+                                bukudipinjam.setDurasi(durasi);
+                                bukuBorrowed.add(bukudipinjam);
+                                bukudipinjam.setTanggalPinjam(new Date());
+                                sendEmailPinjam.kirimEmail(this);
+                                return;
+                            }else{
+                                Alert alert = new Alert(AlertType.INFORMATION);
+                                alert.setHeaderText("Melebihi ketentuan durasi");
+                                alert.showAndWait();
+                            }
+                        }else{
+                            Alert alert = new Alert(AlertType.INFORMATION);
+                            alert.setHeaderText("Melebihi stock yang ada");
+                            alert.showAndWait();
+                        }
+                    }else{
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setHeaderText("Buku tidak ditemukan");
+                        alert.showAndWait();
+                    }
+                }if(!isValid){
+                    Alert error = new Alert(AlertType.ERROR);
+                    error.setHeaderText("404 not found");
+                    error.showAndWait();
+                }
+                
+            } catch (Exception e) {
+                Alert error = new Alert(AlertType.ERROR);
+                error.setHeaderText("404 not found");
+                error.showAndWait();
+            }
+        });
+
+        exitButton.setOnAction(event->{
+            menuStudent(stage);
+        });
+
+        HBox hbox = new HBox(5,submiButton,exitButton);
+        VBox vBox = new VBox(10,juduLabel,juduField,jumlahLabel,jumlahField,durasiLabel,durasField,hbox);
+        vBox.setPadding(new Insets(15));
+        Scene scene = new Scene(vBox, 400, 400);
+        stage.setTitle("Pinjam Buku");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void kembalikanBuku(Stage stage){
+        Label judulLabel = new Label("Judul atau BookId");
+        TextField judulField = new TextField();
+
+        Label jumlahLabel = new Label("Jumlah kembali");
+        TextField jumlahField = new TextField();
+
+        Button submitButton = new Button("submit");
+        Button exitButton = new Button("exit");
+
+        submitButton.setOnAction(event->{
+            try {
+                String judul = judulField.getText();
+                int jumlahback = Integer.parseInt(jumlahField.getText());
+                
+                for(Book cek : bukuBorrowed){
+                    if(judul.equals(cek.getJudul()) || judul.equals(cek.getBookId())){
+                        for(Book back : booklist){
+                            if(jumlahback <= back.getStock()){
+                                back.setStock(back.getStock() - jumlahback);
+                                cek.tambahStock(jumlahback + cek.getStock());
+                                sendEmailKembali.kirimEmail(this);
+                                Alert alert = new Alert(AlertType.INFORMATION);
+                                alert.setHeaderText("Buku berhasil dikembalikan");
+                                alert.showAndWait();
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        });
+
+        HBox hbox = new HBox(5,submitButton,exitButton);
+        VBox vBox = new VBox(10,judulLabel,judulField,jumlahLabel,jumlahField,hbox);
+        vBox.setPadding(new Insets(15));
+        Scene scene = new Scene(vBox, 400, 400);
+        stage.setTitle("Mengembalikan Buku");
+        stage.setScene(scene);
+        stage.show();
+    }
 
     //pinjam buku
     public void pinjamBuku(){
@@ -198,4 +371,5 @@ public class Student extends User{
             }
         }
     }
+
 }
