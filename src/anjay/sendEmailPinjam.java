@@ -13,8 +13,8 @@ import Data.Student;
 public class sendEmailPinjam {
     public static void kirimEmail(Student student){
         // Student student = new Student("", "", "", "", "");
-        final String username = "ilhamakbarjamil8@gmail.com";
-        final String password = "iycx ojhe cmmc hxqf";
+        final String username = "";
+        final String password = "";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
