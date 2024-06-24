@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 // import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
@@ -109,6 +110,7 @@ public class Main extends Application{
 
     public void Mainmenu(Stage stage){
         Label label = new Label("Library Menu");
+       
         
         Button adminBtn = new Button("Login as Admin");
         Button studentBtn = new Button("Login as Student");
@@ -124,6 +126,9 @@ public class Main extends Application{
         vbox.setSpacing(15);
 
         Scene scene = new Scene(vbox, 300, 300);
+
+        Image icon = new Image(getClass().getResourceAsStream("/Logo/Logo2.png"), 50,50,true,true);
+        stage.getIcons().add(icon);
         stage.setTitle("Perpustakaan");
         stage.setScene(scene);
         stage.show();

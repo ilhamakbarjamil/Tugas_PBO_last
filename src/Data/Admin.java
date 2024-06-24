@@ -276,19 +276,6 @@ public class Admin extends User{
         System.out.println("berhasil ditambahkan");
     }
 
-    //display book
-    // public void displayBook(){
-    //     System.out.println("Booklist");
-    //     System.out.println("-------------------------------------------------------------------------------------------------");
-    //     System.out.println("\tJudul\t|\tPenulis\t|\t\tBookId\t\t|\tkategori|\tstock\t|");
-    //     System.out.println("-------------------------------------------------------------------------------------------------");
-    //     for(Book display : booklist){
-    //         System.out.println("\t"+display.getJudul()+"\t|\t"+display.getAuthor()+"\t|\t"+display.getBookId()+"\t|\t"+display.getCategory()+"\t|\t"+display.getStock()+"\t|");
-    //     }
-    //     System.out.println("-------------------------------------------------------------------------------------------------");
-    // }
-
-
     //generated Id
     public static String generated(){
         long waktu = System.currentTimeMillis();
@@ -434,7 +421,6 @@ public class Admin extends User{
                 fakultasField.clear();
                 jurusanField.clear();
                 emailField.clear();
-                showAlert(AlertType.INFORMATION, "berhasil", "berhasil ditambahkan");
             }
         });
 
@@ -453,94 +439,258 @@ public class Admin extends User{
     }
 
     public void addBook(Stage stage) {
-    // Labels and TextFields for book details
-    Label titleLbl = new Label("Title");
-    TextField titleTxt = new TextField();
+        Label kategoriLabel = new Label("Kategori (story/history/text) :");
+        Button storyButton = new Button("story");
+        Button historyButton = new Button("history");
+        Button textButton = new Button("text");
 
-    Label authorLbl = new Label("Author");
-    TextField authorTxt = new TextField();
+        Button backButton = new Button("back");
 
-    Label stockLbl = new Label("Stock");
-    TextField stockTxt = new TextField();
+        storyButton.setOnAction(event->{
+            addBookStory(stage);
+        });
 
-    Label categoryLbl = new Label("Category");
-    TextField categoryTxt = new TextField();
+        historyButton.setOnAction(event->{
+            addBookHistory(stage);
+        });
 
-    // Button to add book
-    Button addBtn = new Button("Add Book");
-    addBtn.setOnAction(event -> {
-        String title = titleTxt.getText();
-        String author = authorTxt.getText();
-        String stockStr = stockTxt.getText();
-        String category = categoryTxt.getText();
+        textButton.setOnAction(event->{
+            addBookText(stage);
+        });
 
-        boolean isValid = true;
-        
-        // Validation
-        if (title.isEmpty() || author.isEmpty() || stockStr.isEmpty() || category.isEmpty()) {
-            isValid = false;
-            showAlert(Alert.AlertType.ERROR, "Form Error!", "Please enter all details");
-            return;
-        }
-        
-        int stock;
+        backButton.setOnAction(event->{
+            adminMenu(stage);
+        });
+
+        HBox hBoxButton = new HBox(8,storyButton,historyButton,textButton);
+        HBox hbox = new HBox(backButton);
+        VBox vbox = new VBox(10,kategoriLabel,hBoxButton,hbox);
+        vbox.setPadding(new Insets(15));
+        Scene scene = new Scene(vbox,400,400);
+        stage.setTitle("Pilih kategori");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void addBookStory(Stage stage){
         try {
-            stock = Integer.parseInt(stockStr);
+            Label judulLabel = new Label("Judul :");
+            TextField judulField = new TextField();
+            Label penulisLabel = new Label("Penulis :");
+            TextField penulisField = new TextField();
+            Label bookIdLabel = new Label("BookId");
+            TextField bookIdField = new TextField();
+            bookIdField.setEditable(false);
+            Label kategoriLabel = new Label("Kategori");
+            TextField kategoriField = new TextField();
+            kategoriField.setEditable(false);
+            Label jumlahLabel = new Label("Jumlah :");
+            TextField jumlahField = new TextField();
+    
+            bookIdField.setText(generated());
+            kategoriField.setText("Story");
+    
+            Button submitButton = new Button("submit");
+            Button exitButton = new Button("exit");
+    
+            submitButton.setOnAction(event->{
+                String judul = judulField.getText();
+                String penulis = penulisField.getText();
+                String bookId = bookIdField.getText();
+                String kategoriStory = kategoriField.getText();
+                int jumlah = Integer.parseInt(jumlahField.getText());
+    
+                boolean isvalid = true;
+                if(judul.isEmpty()){
+                    isvalid = false;
+                    Alert judulAlert = new Alert(AlertType.WARNING);
+                    judulAlert.setHeaderText("Judul tidak boleh kosong");
+                    judulAlert.showAndWait();
+                }
+                if(penulis.isEmpty()){
+                    isvalid = false;
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setHeaderText("Penulis tidak boleh kosong");
+                    alert.showAndWait();
+                }
+                if(jumlah <= 0){
+                    isvalid = false;
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setHeaderText("Jumlah tidak boleh kosong <= 0");
+                    alert.showAndWait();
+                }
+    
+                if(isvalid){
+                    Book bookstory = new Book(judul, penulis, bookId, kategoriStory, jumlah);
+                    booklist.add(bookstory);
+                    judulField.clear();
+                    penulisField.clear();
+                    bookIdField.setText(generated());
+                    jumlahField.clear();
+                }
+            });
+    
+            exitButton.setOnAction(event->{
+                addBook(stage);
+            });
+            
+            HBox hBox = new HBox(8,submitButton,exitButton);
+            VBox vBox = new VBox(10,judulLabel,judulField,penulisLabel,penulisField,bookIdLabel,bookIdField,kategoriLabel,kategoriField,jumlahLabel,jumlahField,hBox);
+            vBox.setPadding(new Insets(15));
+            Scene scene = new Scene(vBox,300,400);
+            stage.setTitle("Tambah Buku Story");
+            stage.setScene(scene);
+            stage.show();
         } catch (NumberFormatException e) {
-            isValid = false;
-            showAlert(Alert.AlertType.ERROR, "Form Error!", "Stock must be a number");
-            return;
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Masukkan angka pada jumlah");
+            alert.showAndWait();
+        } catch(Exception error){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Sepertinya ada yang salah");
+            alert.showAndWait();
         }
+    }
+
+
+    public void addBookHistory(Stage stage){
+        Label judulLabel = new Label("Judul :");
+        TextField judulField = new TextField();
+        Label penulisLabel = new Label("Penulis :");
+        TextField penulisField = new TextField();
+        Label bookIdLabel = new Label("BookId");
+        TextField bookIdField = new TextField();
+        bookIdField.setEditable(false);
+        Label kategoriLabel = new Label("Kategori");
+        TextField kategoriField = new TextField();
+        kategoriField.setEditable(false);
+        Label jumlahLabel = new Label("Jumlah :");
+        TextField jumlahField = new TextField();
+
+        bookIdField.setText(generated());
+        kategoriField.setText("History");
+
+        Button submitButton = new Button("submit");
+        Button exitButton = new Button("exit");
+
+        submitButton.setOnAction(event->{
+            String judul = judulField.getText();
+            String penulis = penulisField.getText();
+            String bookId = bookIdField.getText();
+            String kategoriStory = kategoriField.getText();
+            int jumlah = Integer.parseInt(jumlahField.getText());
+
+            boolean isvalid = true;
+            if(judul.isEmpty()){
+                isvalid = false;
+                Alert judulAlert = new Alert(AlertType.WARNING);
+                judulAlert.setHeaderText("Judul tidak boleh kosong");
+                judulAlert.showAndWait();
+            }
+            if(penulis.isEmpty()){
+                isvalid = false;
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setHeaderText("Penulis tidak boleh kosong");
+                alert.showAndWait();
+            }
+            if(jumlah <= 0){
+                isvalid = false;
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setHeaderText("Jumlah tidak boleh kosong <= 0");
+                alert.showAndWait();
+            }
+
+            if(isvalid){
+                Book bookstory = new Book(judul, penulis, bookId, kategoriStory, jumlah);
+                booklist.add(bookstory);
+                judulField.clear();
+                penulisField.clear();
+                bookIdField.setText(generated());
+                jumlahField.clear();
+            }
+        });
+
+        exitButton.setOnAction(event->{
+            addBook(stage);
+        });
         
-        String bookId = generated();
+        HBox hBox = new HBox(8,submitButton,exitButton);
+        VBox vBox = new VBox(10,judulLabel,judulField,penulisLabel,penulisField,bookIdLabel,bookIdField,kategoriLabel,kategoriField,jumlahLabel,jumlahField,hBox);
+        vBox.setPadding(new Insets(15));
+        Scene scene = new Scene(vBox,300,400);
+        stage.setTitle("Tambah Buku History");
+        stage.setScene(scene);
+        stage.show();
+    }
 
-        // Add book based on category
-        switch (category.toLowerCase()) {
-            case "story":
-                booklist.add(new StoryBook(title, author, bookId, category, stock));
-                break;
-            case "history":
-                booklist.add(new HistoryBook(title, author, bookId, category, stock));
-                break;
-            case "text":
-                booklist.add(new TextBook(title, author, bookId, category, stock));
-                break;
-            default:
-                isValid = false;
-                showAlert(Alert.AlertType.ERROR, "Form Error!", "Invalid category. Use 'story', 'history', or 'text'.");
-                return;
-        }
+    public void addBookText(Stage stage){
+        Label judulLabel = new Label("Judul :");
+        TextField judulField = new TextField();
+        Label penulisLabel = new Label("Penulis :");
+        TextField penulisField = new TextField();
+        Label bookIdLabel = new Label("BookId");
+        TextField bookIdField = new TextField();
+        bookIdField.setEditable(false);
+        Label kategoriLabel = new Label("Kategori");
+        TextField kategoriField = new TextField();
+        kategoriField.setEditable(false);
+        Label jumlahLabel = new Label("Jumlah :");
+        TextField jumlahField = new TextField();
 
-        if(isValid){
-            titleTxt.clear();
-            authorTxt.clear();
-            stockTxt.clear();
-            categoryTxt.clear();
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Book added successfully");
-        }
-    });
+        bookIdField.setText(generated());
+        kategoriField.setText("Text");
 
-    // Button to go back to the admin menu
-    Button backBtn = new Button("Back");
-    backBtn.setOnAction(event -> adminMenu(stage));
+        Button submitButton = new Button("submit");
+        Button exitButton = new Button("exit");
 
-    HBox hbox = new HBox(5,addBtn,backBtn);
-    // Layout for the form
-    VBox vbox = new VBox(10, titleLbl, titleTxt, authorLbl, authorTxt, stockLbl, stockTxt, categoryLbl, categoryTxt, hbox);
-    vbox.setPadding(new Insets(10));
+        submitButton.setOnAction(event->{
+            String judul = judulField.getText();
+            String penulis = penulisField.getText();
+            String bookId = bookIdField.getText();
+            String kategoriStory = kategoriField.getText();
+            int jumlah = Integer.parseInt(jumlahField.getText());
 
-    // Set the scene and show the stage
-    Scene scene = new Scene(vbox, 300, 400);
-    stage.setTitle("Add Book");
-    stage.setScene(scene);
-    stage.show();
-}
+            boolean isvalid = true;
+            if(judul.isEmpty()){
+                isvalid = false;
+                Alert judulAlert = new Alert(AlertType.WARNING);
+                judulAlert.setHeaderText("Judul tidak boleh kosong");
+                judulAlert.showAndWait();
+            }
+            if(penulis.isEmpty()){
+                isvalid = false;
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setHeaderText("Penulis tidak boleh kosong");
+                alert.showAndWait();
+            }
+            if(jumlah <= 0){
+                isvalid = false;
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setHeaderText("Jumlah tidak boleh kosong <= 0");
+                alert.showAndWait();
+            }
 
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.showAndWait();
+            if(isvalid){
+                Book bookstory = new Book(judul, penulis, bookId, kategoriStory, jumlah);
+                booklist.add(bookstory);
+                judulField.clear();
+                penulisField.clear();
+                bookIdField.setText(generated());
+                jumlahField.clear();
+            }
+        });
+
+        exitButton.setOnAction(event->{
+            addBook(stage);
+        });
+        
+        HBox hBox = new HBox(8,submitButton,exitButton);
+        VBox vBox = new VBox(10,judulLabel,judulField,penulisLabel,penulisField,bookIdLabel,bookIdField,kategoriLabel,kategoriField,jumlahLabel,jumlahField,hBox);
+        vBox.setPadding(new Insets(15));
+        Scene scene = new Scene(vBox,300,400);
+        stage.setTitle("Tambah Buku text");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void displaystudent(Stage stage){

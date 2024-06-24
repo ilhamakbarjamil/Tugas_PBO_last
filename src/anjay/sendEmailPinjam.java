@@ -13,8 +13,8 @@ import Data.Student;
 public class sendEmailPinjam {
     public static void kirimEmail(Student student){
         // Student student = new Student("", "", "", "", "");
-        final String username = "";
-        final String password = "";
+        final String username = "ilhamakbarjamil@gmail.com";
+        final String password = "iycx ojhe cmmc hxqf";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -36,6 +36,7 @@ public class sendEmailPinjam {
             message.setSubject("Pinjam Buku");
         
             StringBuilder emailContent = new StringBuilder();
+            emailContent.append("Terima kasih,\nterimakasih sudah melakukan peminjaman buku\n");
             emailContent.append("----------------------------------------------------------------------\n");
             emailContent.append("Buku yang diPinjam\n");
             emailContent.append("----------------------------------------------------------------------\n");

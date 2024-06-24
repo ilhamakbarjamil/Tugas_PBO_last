@@ -16,8 +16,8 @@ import Data.Student;
 public class sendEmailKembali {
     public static void kirimEmail(Student student){
         // Student student = new Student("", "", "", "", "");
-        final String username = "";
-        final String password = "";
+        final String username = "ilhamakbarjamil8@gmail.com";
+        final String password = "iycx ojhe cmmc hxqf";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -39,6 +39,7 @@ public class sendEmailKembali {
             message.setSubject("Mengembalikan Buku");
             
             StringBuilder emailContent = new StringBuilder();
+            emailContent.append("Thank you,\n terimakasih sudah berkunjung\n");
             emailContent.append("----------------------------------------------------------------------\n");
             emailContent.append("Buku yang dikembalikan\n");
             emailContent.append("----------------------------------------------------------------------\n");

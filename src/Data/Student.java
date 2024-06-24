@@ -66,7 +66,7 @@ public class Student extends User{
         });
 
         tampilkanButton.setOnAction(event->{
-            // tampilkanBukuDipinjam(stage);
+            displayBorrowedBooksController(stage);
         });
 
         logoutButton.setOnAction(event->{
@@ -78,6 +78,100 @@ public class Student extends User{
         vBox.setSpacing(10);
         Scene scene = new Scene(vBox, 400, 400);
         stage.setTitle("Menu Student");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void displayBorrowedBooksController(Stage stage) {
+        TableView<Book> table = new TableView<>();
+    
+        TableColumn<Book, String> judulColumn = new TableColumn<>("Judul");
+        judulColumn.setCellValueFactory(new PropertyValueFactory<>("judul"));
+    
+        TableColumn<Book, String> penulisColumn = new TableColumn<>("Penulis");
+        penulisColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+    
+        TableColumn<Book, String> bookIdColumn = new TableColumn<>("BookId");
+        bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
+
+        TableColumn<Book, String> kategotiColumn = new TableColumn<>("Kategori");
+        kategotiColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+
+        TableColumn<Book, String> jumlahColumn = new TableColumn<>("Jumlah");
+        jumlahColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+    
+        TableColumn<Book, Integer> durasiColumn = new TableColumn<>("Durasi (hari)");
+        durasiColumn.setCellValueFactory(new PropertyValueFactory<>("durasi"));
+
+        Button backButton = new Button("Back");
+
+        backButton.setOnAction(event->{
+            menuStudent(stage);
+        });
+    
+        List<TableColumn<Book, ?>> columns = new ArrayList<>();
+        columns.add(judulColumn);
+        columns.add(penulisColumn);
+        columns.add(bookIdColumn);
+        columns.add(kategotiColumn); 
+        columns.add(jumlahColumn); 
+        columns.add(durasiColumn);
+
+        table.getColumns().addAll(columns);
+        
+        ObservableList<Book> borrowedBooks = FXCollections.observableArrayList(bukuBorrowed);
+        table.setItems(borrowedBooks);
+    
+        VBox vbox = new VBox(table, backButton);
+        Scene scene = new Scene(vbox, 600, 400);
+        stage.setTitle("Buku yang Sedang Dipinjam");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void tampilkanbukuborrowed(Stage stage) {
+        TableView<Book> table = new TableView<>();
+    
+        TableColumn<Book, String> judulColumn = new TableColumn<>("Judul");
+        judulColumn.setCellValueFactory(new PropertyValueFactory<>("judul"));
+    
+        TableColumn<Book, String> penulisColumn = new TableColumn<>("Penulis");
+        penulisColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+    
+        TableColumn<Book, String> bookIdColumn = new TableColumn<>("BookId");
+        bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
+
+        TableColumn<Book, String> kategotiColumn = new TableColumn<>("Kategori");
+        kategotiColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+
+        TableColumn<Book, String> jumlahColumn = new TableColumn<>("Jumlah");
+        jumlahColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+    
+        TableColumn<Book, Integer> durasiColumn = new TableColumn<>("Durasi (hari)");
+        durasiColumn.setCellValueFactory(new PropertyValueFactory<>("durasi"));
+
+        Button backButton = new Button("Back");
+
+        backButton.setOnAction(event->{
+            kembalikanBuku(stage);
+        });
+    
+        List<TableColumn<Book, ?>> columns = new ArrayList<>();
+        columns.add(judulColumn);
+        columns.add(penulisColumn);
+        columns.add(bookIdColumn);
+        columns.add(kategotiColumn); 
+        columns.add(jumlahColumn); 
+        columns.add(durasiColumn);
+
+        table.getColumns().addAll(columns);
+        
+        ObservableList<Book> borrowedBooks = FXCollections.observableArrayList(bukuBorrowed);
+        table.setItems(borrowedBooks);
+    
+        VBox vbox = new VBox(table, backButton);
+        Scene scene = new Scene(vbox, 600, 400);
+        stage.setTitle("Buku yang Sedang Dipinjam");
         stage.setScene(scene);
         stage.show();
     }
@@ -142,57 +236,51 @@ public class Student extends User{
                 String judul = juduField.getText();
                 int jumlah = Integer.parseInt(jumlahField.getText());
                 int durasi = Integer.parseInt(durasField.getText());
-                boolean isValid = true;            
+                boolean isValid = false;            
     
-                for(Book cek : booklist){
-                    if(judul.equals(cek.getJudul()) || judul.equals(cek.getBookId())){
+                for (Book book : booklist) {
+                    if (judul.equalsIgnoreCase(book.getJudul()) || judul.equalsIgnoreCase(book.getBookId())) {
                         isValid = true;
-                        Alert alertcek = new Alert(AlertType.INFORMATION);
-                        alertcek.setHeaderText("Buku ditemukan");
-                        alertcek.showAndWait();
-                        if(jumlah <= cek.getStock()){
-                            isValid = true;
-                            // Alert alertjumlah = new Alert(AlertType.INFORMATION);
-                            // alertcek.setHeaderText("Peminjaman dalam jumlah wajar");
-                            // alertcek.showAndWait();
-                            if(durasi <= 14){
-                                isValid = true;
-                                cek.kurangStock(jumlah);
-                                Book bukudipinjam = new Book(cek);
-                                bukudipinjam.setStock(jumlah);
-                                bukudipinjam.setDurasi(durasi);
-                                bukuBorrowed.add(bukudipinjam);
-                                bukudipinjam.setTanggalPinjam(new Date());
+                        if (jumlah <= book.getStock()) {
+                            if (durasi <= 14) {
+                                book.kurangStock(jumlah);
+                                Book bukuDipinjam = new Book(book);
+                                bukuDipinjam.setStock(jumlah);
+                                bukuDipinjam.setDurasi(durasi);
+                                bukuDipinjam.setTanggalPinjam(new Date());
+                                bukuBorrowed.add(bukuDipinjam);
                                 sendEmailPinjam.kirimEmail(this);
-                                Alert alert = new Alert(AlertType.INFORMATION);
+    
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setHeaderText("Buku berhasil dipinjam");
                                 alert.setContentText("Email berhasil terkirim");
                                 alert.showAndWait();
-                                return;
-                            }else{
-                                Alert alert = new Alert(AlertType.INFORMATION);
-                                alert.setHeaderText("Email gagal terkirim");
+    
+                                return;                         
+                            } else {
+                                Alert alert = new Alert(Alert.AlertType.WARNING);
+                                alert.setHeaderText("Durasi pinjam maksimal 14 hari");
                                 alert.showAndWait();
+                                return;                         
                             }
-                        }else{
-                            Alert alert = new Alert(AlertType.INFORMATION);
-                            alert.setHeaderText("Melebihi stock yang ada");
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setHeaderText("Stok tidak mencukupi");
                             alert.showAndWait();
+                            return; 
                         }
-                    }else{
-                        Alert alert = new Alert(AlertType.INFORMATION);
-                        alert.setHeaderText("Buku tidak ditemukan");
-                        alert.showAndWait();
                     }
-                }if(!isValid){
-                    Alert error = new Alert(AlertType.ERROR);
-                    error.setHeaderText("404 not found");
-                    error.showAndWait();
+                }
+    
+                if (!isValid) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setHeaderText("Buku tidak ditemukan");
+                    alert.showAndWait();
                 }
                 
             } catch (Exception e) {
                 Alert error = new Alert(AlertType.ERROR);
-                error.setHeaderText("404 not found");
+                error.setHeaderText("Sepertinya Ada yang salah");
                 error.showAndWait();
             }
         });
@@ -222,34 +310,55 @@ public class Student extends User{
         Label jumlahLabel = new Label("Jumlah kembali");
         TextField jumlahField = new TextField();
 
+        Button lihatBukuButton = new Button("Lihat buku yang dipinjam");
         Button submitButton = new Button("submit");
         Button exitButton = new Button("exit");
+
+        lihatBukuButton.setOnAction(event->{
+            tampilkanbukuborrowed(stage);
+        });
 
         submitButton.setOnAction(event->{
             try {
                 String judul = judulField.getText();
                 jumlahkembali = Integer.parseInt(jumlahField.getText());
-                
-                for(Book cek : bukuBorrowed){
-                    if(judul.equals(cek.getJudul()) || judul.equals(cek.getBookId())){
-                        for(Book back : booklist){
-                            if(jumlahkembali <= back.getStock()){
-                                back.setStock(back.getStock() - jumlahkembali);
-                                cek.tambahStock(jumlahkembali + cek.getStock());
-                                if (cek.getStock() == 0) {
-                                    bukuBorrowed.remove(cek);
-                                }
+                boolean found = false;
+
+                for(Book origin : booklist){
+                    if(origin.getJudul().equals(judul) || origin.getBookId().equals(judul)){
+                        found = true;
+                        for(Book second : bukuBorrowed){
+                            if(jumlahkembali > 14){
+                                found = false;
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setHeaderText("Melebihi stock yang ada");
+                                alert.setContentText("silahkan coba lagi");
+                                alert.showAndWait();
+                            }else{
+                                found = true;
+                                origin.tambahStock(jumlahkembali);
+                                second.setStock(second.getStock() - jumlahkembali);
+                                judulField.clear();
+                                jumlahField.clear();
                                 sendEmailKembali.kirimEmail(this);
-                                Alert alert = new Alert(AlertType.INFORMATION);
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setHeaderText("Buku berhasil dikembalikan");
                                 alert.setContentText("Email berhasil terkirim");
                                 alert.showAndWait();
+                                if(second.getStock() == 0){
+                                    bukuBorrowed.remove(second);
+                                }
                             }
                         }
                     }
+                }if(!found){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Sepertinya ada yang salah");
+                    alert.showAndWait();
                 }
-            } catch (Exception e) {
-                // TODO: handle exception
+            }catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.showAndWait();
             }
         });
 
@@ -257,7 +366,7 @@ public class Student extends User{
             menuStudent(stage);
         });
 
-        HBox hbox = new HBox(5,submitButton,exitButton);
+        HBox hbox = new HBox(5,submitButton,lihatBukuButton,exitButton);
         VBox vBox = new VBox(10,judulLabel,judulField,jumlahLabel,jumlahField,hbox);
         vBox.setPadding(new Insets(15));
         Scene scene = new Scene(vBox, 400, 400);
@@ -441,5 +550,4 @@ public class Student extends User{
             }
         }
     }
-
 }

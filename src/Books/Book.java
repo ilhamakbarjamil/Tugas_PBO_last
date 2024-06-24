@@ -3,7 +3,7 @@ package Books;
 import java.util.Date;
 
 public class Book {
-    String judul, BookId, author, category;
+    String judul, BookId, author, category, stockSting;
     int stock;
     int durasi;
     private Date tanggalPinjam;
@@ -14,6 +14,14 @@ public class Book {
         this.author = author;
         this.category = category;
         this.stock = stock;
+    }
+
+    public Book(String judul,  String author, String bookId, String category, String stock){
+        this.judul = judul;
+        this.BookId = bookId;
+        this.author = author;
+        this.category = category;
+        this.stockSting = stock;
     }
 
     public Book(Book book) {
