@@ -640,16 +640,11 @@ public class Admin extends User{
         TableColumn<Book, String> categoryColumn = new TableColumn<>("Kategori");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category")); 
     
-        Button pinjamButton = new Button("pinjam");
         Button backBtn = new Button("Back");
         backBtn.setOnAction(event -> {
-            
+            Student student = new Student();
+            student.pinjamBuku(stage);
         });
-
-        pinjamButton.setOnAction(event->{
-            
-        });
-
     
         table.getColumns().add(judulColumn);
         table.getColumns().add(penulisColumn);
@@ -660,7 +655,7 @@ public class Admin extends User{
         ObservableList<Book> bookList = FXCollections.observableArrayList(booklist);
         table.setItems(bookList);
     
-        VBox vbox = new VBox(table, backBtn, pinjamButton);
+        VBox vbox = new VBox(table, backBtn);
         Scene scene = new Scene(vbox, 600, 400);
         stage.setTitle("Daftar Buku");
         stage.setScene(scene);
