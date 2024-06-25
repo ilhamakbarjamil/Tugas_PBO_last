@@ -239,7 +239,7 @@ public class Student extends User{
                 boolean isValid = false;            
     
                 for (Book book : booklist) {
-                    if (judul.equalsIgnoreCase(book.getJudul()) || judul.equalsIgnoreCase(book.getBookId())) {
+                    if (book.getJudul().equals(judul) || book.getBookId().equals(judul)) {
                         isValid = true;
                         if (jumlah <= book.getStock()) {
                             if (durasi <= 14) {
@@ -249,7 +249,7 @@ public class Student extends User{
                                 bukuDipinjam.setDurasi(durasi);
                                 bukuDipinjam.setTanggalPinjam(new Date());
                                 bukuBorrowed.add(bukuDipinjam);
-                                sendEmailPinjam.kirimEmail(this);
+                                // sendEmailPinjam.kirimEmail(this);
     
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setHeaderText("Buku berhasil dipinjam");
@@ -323,27 +323,17 @@ public class Student extends User{
                 jumlahkembali = Integer.parseInt(jumlahField.getText());
                 boolean found = false;
 
-                for(Book origin : booklist){
-                    if(origin.getJudul().equals(judul) || origin.getBookId().equals(judul)){
+                for(Book book : booklist){
+                    if(judul.equals(book.getJudul()) || judul.equals(book.getBookId())){
                         found = true;
-                        for(Book second : bukuBorrowed){
-                            if(jumlahkembali > 14){
-                                found = false;
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setHeaderText("Melebihi stock yang ada");
-                                alert.setContentText("silahkan coba lagi");
-                                alert.show();
-                            }else if(jumlahkembali <= second.getStock()){
+                        for(Book book2 : bukuBorrowed){
+                            if(jumlahkembali <= book2.getStock()){
                                 found = true;
-                                origin.tambahStock(jumlahkembali);
-                                second.setStock(second.getStock() - jumlahkembali);
-                                sendEmailKembali.kirimEmail(this);
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setHeaderText("Buku berhasil dikembalikan");
-                                alert.setContentText("Email berhasil terkirim");
-                                alert.show();
-                                if(second.getStock() == 0){
-                                    bukuBorrowed.remove(second);
+                                book.setStock(jumlahkembali + book.getStock());
+                                book2.kurangStock(jumlahkembali);
+                                // sendEmailKembali.kirimEmail(this);
+                                if(book2.getStock() == 0){
+                                    bukuBorrowed.remove(book2);
                                 }
                             }
                         }
