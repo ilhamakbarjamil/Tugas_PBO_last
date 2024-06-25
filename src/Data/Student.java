@@ -254,9 +254,8 @@ public class Student extends User{
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setHeaderText("Buku berhasil dipinjam");
                                 alert.setContentText("Email berhasil terkirim");
-                                alert.showAndWait();
-    
-                                return;                         
+                                alert.show();
+                            
                             } else {
                                 Alert alert = new Alert(Alert.AlertType.WARNING);
                                 alert.setHeaderText("Durasi pinjam maksimal 14 hari");
@@ -333,18 +332,16 @@ public class Student extends User{
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setHeaderText("Melebihi stock yang ada");
                                 alert.setContentText("silahkan coba lagi");
-                                alert.showAndWait();
-                            }else{
+                                alert.show();
+                            }else if(jumlahkembali <= second.getStock()){
                                 found = true;
                                 origin.tambahStock(jumlahkembali);
                                 second.setStock(second.getStock() - jumlahkembali);
-                                judulField.clear();
-                                jumlahField.clear();
                                 sendEmailKembali.kirimEmail(this);
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setHeaderText("Buku berhasil dikembalikan");
                                 alert.setContentText("Email berhasil terkirim");
-                                alert.showAndWait();
+                                alert.show();
                                 if(second.getStock() == 0){
                                     bukuBorrowed.remove(second);
                                 }
@@ -360,6 +357,8 @@ public class Student extends User{
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.showAndWait();
             }
+            judulField.clear();
+            jumlahField.clear();
         });
 
         exitButton.setOnAction(event->{

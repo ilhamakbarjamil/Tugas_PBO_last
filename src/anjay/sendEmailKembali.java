@@ -39,7 +39,6 @@ public class sendEmailKembali {
             message.setSubject("Mengembalikan Buku");
             
             StringBuilder emailContent = new StringBuilder();
-            emailContent.append("Thank you,\n terimakasih sudah berkunjung\n");
             emailContent.append("----------------------------------------------------------------------\n");
             emailContent.append("Buku yang dikembalikan\n");
             emailContent.append("----------------------------------------------------------------------\n");
@@ -47,7 +46,7 @@ public class sendEmailKembali {
                 emailContent.append("Judul\t: "+book.getJudul()+"\n");
                 emailContent.append("Author\t: "+book.getAuthor()+"\n");
                 emailContent.append("BookId\t: "+book.getBookId()+"\n");
-                emailContent.append("Kategori: "+book.getCategory()+"\n");
+                emailContent.append("Kategori\t: "+book.getCategory()+"\n");
                 emailContent.append("Jumlah\t: "+Student.jumlahkembali+"\n");
                 emailContent.append("tanggal\t:"+ new Date());
             }
