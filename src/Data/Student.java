@@ -249,7 +249,7 @@ public class Student extends User{
                                 bukuDipinjam.setDurasi(durasi);
                                 bukuDipinjam.setTanggalPinjam(new Date());
                                 bukuBorrowed.add(bukuDipinjam);
-                                // sendEmailPinjam.kirimEmail(this);
+                                sendEmailPinjam.kirimEmail(this);
     
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setHeaderText("Buku berhasil dipinjam");
@@ -318,34 +318,39 @@ public class Student extends User{
         });
 
         submitButton.setOnAction(event->{
-            try {
-                String judul = judulField.getText();
-                jumlahkembali = Integer.parseInt(jumlahField.getText());
-                boolean found = false;
+            String judul = judulField.getText();
+            jumlahkembali = Integer.parseInt(jumlahField.getText());
 
-                for(Book book : booklist){
-                    if(judul.equals(book.getJudul()) || judul.equals(book.getBookId())){
-                        found = true;
-                        for(Book book2 : bukuBorrowed){
-                            if(jumlahkembali <= book2.getStock()){
-                                found = true;
-                                book.setStock(jumlahkembali + book.getStock());
-                                book2.kurangStock(jumlahkembali);
-                                // sendEmailKembali.kirimEmail(this);
-                                if(book2.getStock() == 0){
-                                    bukuBorrowed.remove(book2);
-                                }
+            for(Book back : bukuBorrowed){
+                if(back.getBookId().equals(judul) || back.getJudul().equals(judul)){
+                    if(jumlahkembali <= back.getStock()){
+                        for(Book tambah : booklist){
+                            back.setStock(back.getStock() - jumlahkembali);
+                            // tambah.tambahStock(jumlahkembali);
+                            tambah.setStock(jumlahkembali + tambah.getStock());
+                            System.out.println("buku berhasil dikembalikan");
+                            sendEmailKembali.kirimEmail(this);
+
+                            if(back.getStock() == 0){
+                                bukuBorrowed.remove(back);
                             }
+
+                            Date tanggalKembali = new Date();
+                            long selisih = selisihHari(back.getTanggalPinjam(), tanggalKembali);
+                            if(selisih > back.getDurasi()){
+                                long keterlambatan = selisih - back.getDurasi();
+                                System.out.println("anda terlambat mengembalikan selama "+keterlambatan+" hari");
+                                beriSanksi(keterlambatan);
+                            }
+                            return;
                         }
+                    } 
+                    else{
+                        System.out.println("melebihi batas stok yang dipinjam");
                     }
-                }if(!found){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Sepertinya ada yang salah");
-                    alert.showAndWait();
+                }else{
+                    // System.out.println("BookId '"+Id+"' tidak ditemukan");
                 }
-            }catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.showAndWait();
             }
             judulField.clear();
             jumlahField.clear();
