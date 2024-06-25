@@ -3,6 +3,7 @@ package Data;
 import Books.Book;
 import Exception.IllegalAdminAccess;
 import Utama.Main;
+import anjay.emailSanksi;
 import anjay.sendEmailKembali;
 import anjay.sendEmailPinjam;
 import javafx.collections.FXCollections;
@@ -268,6 +269,11 @@ public class Student extends User{
                             alert.showAndWait();
                             return; 
                         }
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setHeaderText("Buku tidak ditemukan");
+                        alert.showAndWait();
+                        return; 
                     }
                 }
     
@@ -291,6 +297,10 @@ public class Student extends User{
         exitButton.setOnAction(event->{
             menuStudent(stage);
         });
+
+        juduField.clear();
+        jumlahField.clear();
+        durasField.clear();
 
         HBox hbox = new HBox(7,submiButton,lihatbukuButton,exitButton);
         VBox vBox = new VBox(10,juduLabel,juduField,jumlahLabel,jumlahField,durasiLabel,durasField,hbox);
@@ -341,24 +351,32 @@ public class Student extends User{
                                 long keterlambatan = selisih - back.getDurasi();
                                 System.out.println("anda terlambat mengembalikan selama "+keterlambatan+" hari");
                                 beriSanksi(keterlambatan);
+                                emailSanksi.kirimEmail(this);
                             }
                             return;
                         }
                     } 
                     else{
-                        System.out.println("melebihi batas stok yang dipinjam");
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setHeaderText("Melebihi jumlah pada saat pinjam");
+                        alert.showAndWait();
+                        return; 
                     }
                 }else{
-                    // System.out.println("BookId '"+Id+"' tidak ditemukan");
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setHeaderText("Buku tidak ditemukan");
+                    alert.showAndWait();
+                    return; 
                 }
             }
-            judulField.clear();
-            jumlahField.clear();
         });
 
         exitButton.setOnAction(event->{
             menuStudent(stage);
         });
+
+        judulField.clear();
+        jumlahField.clear();
 
         HBox hbox = new HBox(5,submitButton,lihatBukuButton,exitButton);
         VBox vBox = new VBox(10,judulLabel,judulField,jumlahLabel,jumlahField,hbox);

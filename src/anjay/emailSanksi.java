@@ -44,6 +44,7 @@ public class emailSanksi {
                 emailContent.append("BookId\t: "+book.getBookId()+"\n");
                 emailContent.append("Kategori: "+book.getCategory()+"\n");
                 emailContent.append("Jumlah\t: "+Student.jumlahkembali+"\n");
+                emailContent.append("");
             }
             emailContent.append("----------------------------------------------------------------------");
             // for(Book display : User.booklist){
