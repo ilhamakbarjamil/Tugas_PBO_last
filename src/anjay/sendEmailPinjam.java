@@ -36,6 +36,7 @@ public class sendEmailPinjam {
             message.setSubject("Pinjam Buku");
         
             StringBuilder emailContent = new StringBuilder();
+            emailContent.append("Terima kasih,\nBuku berhasil dipinjam\n");
             emailContent.append("----------------------------------------------------------------------\n");
             emailContent.append("Buku yang diPinjam\n");
             emailContent.append("----------------------------------------------------------------------\n");

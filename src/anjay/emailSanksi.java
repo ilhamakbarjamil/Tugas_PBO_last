@@ -36,7 +36,7 @@ public class emailSanksi {
             message.setSubject("Sanksi");
             
             StringBuilder emailContent = new StringBuilder();
-            emailContent.append("Anda terlambat mengembalikkan buku\n");
+            emailContent.append("Anda terkena denda,\nAnda terlambat mengembalikkan buku sehingga anda dikenakan denda,\berikut buku yang masih anda pinjam\n");
 
             for(Book book : student.getBukuBorrowed()){
                 emailContent.append("Judul\t: "+book.getJudul()+"\n");

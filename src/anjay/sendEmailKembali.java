@@ -39,6 +39,7 @@ public class sendEmailKembali {
             message.setSubject("Mengembalikan Buku");
             
             StringBuilder emailContent = new StringBuilder();
+            emailContent.append("Terima kasih,\nBuku berhasil di kembalikan");
             emailContent.append("----------------------------------------------------------------------\n");
             emailContent.append("Buku yang dikembalikan\n");
             emailContent.append("----------------------------------------------------------------------\n");
