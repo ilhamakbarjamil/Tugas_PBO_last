@@ -47,9 +47,10 @@ public class sendEmailKembali {
                 emailContent.append("Judul\t: "+book.getJudul()+"\n");
                 emailContent.append("Author\t: "+book.getAuthor()+"\n");
                 emailContent.append("BookId\t: "+book.getBookId()+"\n");
-                emailContent.append("Kategori\t: "+book.getCategory()+"\n");
+                emailContent.append("Kategori: "+book.getCategory()+"\n");
                 emailContent.append("Jumlah\t: "+Student.jumlahkembali+"\n");
                 emailContent.append("tanggal\t:"+ new Date());
+                emailContent.append("");
             }
             emailContent.append("\n----------------------------------------------------------------------");
             // for(Book display : User.booklist){

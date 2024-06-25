@@ -44,13 +44,13 @@ public class sendEmailPinjam {
                 emailContent.append("Judul\t: "+book.getJudul()+"\n");
                 emailContent.append("Author\t: "+book.getAuthor()+"\n");
                 emailContent.append("BookId\t: "+book.getBookId()+"\n");
-                emailContent.append("Kategori\t: "+book.getCategory()+"\n");
+                emailContent.append("Kategori: "+book.getCategory()+"\n");
                 emailContent.append("Jumlah\t: "+book.getStock()+"\n");
                 emailContent.append("durasi\t: "+book.getDurasi()+" hari\n");
                 emailContent.append("Tanggal\t: "+book.getTanggalPinjam());
-                emailContent.append("\n");
+                emailContent.append("");
             }
-            emailContent.append("----------------------------------------------------------------------");
+            emailContent.append("\n----------------------------------------------------------------------");
 
             message.setText(emailContent.toString());
             Transport.send(message);
