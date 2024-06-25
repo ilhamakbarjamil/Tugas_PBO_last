@@ -4,7 +4,7 @@ package anjay;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
- 
+
 import Books.Book;
 import Data.Student;
 
@@ -13,7 +13,7 @@ import Data.Student;
 public class sendEmailPinjam {
     public static void kirimEmail(Student student){
         // Student student = new Student("", "", "", "", "");
-        final String username = "ilhamakbarjamil@gmail.com";
+        final String username = "ilhamakbarjamil8@gmail.com";
         final String password = "iycx ojhe cmmc hxqf";
 
         Properties props = new Properties();
@@ -36,7 +36,6 @@ public class sendEmailPinjam {
             message.setSubject("Pinjam Buku");
         
             StringBuilder emailContent = new StringBuilder();
-            emailContent.append("Terima kasih,\nterimakasih sudah melakukan peminjaman buku\n");
             emailContent.append("----------------------------------------------------------------------\n");
             emailContent.append("Buku yang diPinjam\n");
             emailContent.append("----------------------------------------------------------------------\n");
@@ -44,7 +43,7 @@ public class sendEmailPinjam {
                 emailContent.append("Judul\t: "+book.getJudul()+"\n");
                 emailContent.append("Author\t: "+book.getAuthor()+"\n");
                 emailContent.append("BookId\t: "+book.getBookId()+"\n");
-                emailContent.append("Kategori: "+book.getCategory()+"\n");
+                emailContent.append("Kategori\t: "+book.getCategory()+"\n");
                 emailContent.append("Jumlah\t: "+book.getStock()+"\n");
                 emailContent.append("durasi\t: "+book.getDurasi()+" hari\n");
                 emailContent.append("Tanggal\t: "+book.getTanggalPinjam());
