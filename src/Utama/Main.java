@@ -12,6 +12,7 @@ import Data.Student;
 import Exception.IllegalAdminAccess;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 // import javafx.scene.control.AlertType;
@@ -118,6 +119,11 @@ public class Main extends Application{
         Button studentBtn = new Button("Login as Student");
         Button exitBtn = new Button("Exit");
 
+        double setbuttonwidth = 150;
+        adminBtn.setMinWidth(setbuttonwidth);
+        studentBtn.setMinWidth(setbuttonwidth);
+        exitBtn.setMinWidth(setbuttonwidth);
+
         adminBtn.setOnAction(e -> loginAdmin(stage));
         studentBtn.setOnAction(e -> checkNim(stage));
         exitBtn.setOnAction(e -> System.exit(0));
@@ -126,6 +132,7 @@ public class Main extends Application{
         VBox vbox = new VBox(label,adminBtn, studentBtn, exitBtn, output);
         vbox.setPadding(new Insets(10));
         vbox.setSpacing(15);
+        vbox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vbox, 300, 300);
 
@@ -146,11 +153,13 @@ public class Main extends Application{
         passwordField.setPromptText("masukkan password");
 
         Button submitBtn = new Button("Submit");
+        double setwitdh = 100;
+        submitBtn.setMinWidth(setwitdh);
 
         submitBtn.setOnAction(event ->{
             String user = usernameField.getText();
             String pass = passwordField.getText();
-            if(user.equalsIgnoreCase("admin") && pass.equalsIgnoreCase("admin123")){
+            if(user.equalsIgnoreCase("1") && pass.equalsIgnoreCase("1")){
                 admin.adminMenu(stage);
             }else{
                 Alert alert = new Alert(AlertType.WARNING);
@@ -161,7 +170,9 @@ public class Main extends Application{
             }
         });
 
-        VBox vbox = new VBox(10, username,usernameField,password,passwordField,submitBtn);
+        VBox submit = new VBox(submitBtn);
+        submit.setAlignment(Pos.CENTER);
+        VBox vbox = new VBox(10, username,usernameField,password,passwordField,submit);
         vbox.setPadding(new Insets(15));
         Scene scene = new Scene(vbox, 400, 400);
         stage.setTitle("Login Admin");
@@ -170,11 +181,16 @@ public class Main extends Application{
     }
 
     private void checkNim(Stage stage){
-        Label label = new Label("Masukkan Nim (99 back) : ");
+        Label label = new Label("Masukkan Nim : ");
         TextField nimField = new TextField();
         nimField.setPromptText("Masukkan nim");
+
         Button submitBtn = new Button("Submit");
         Button backBtn = new Button("Back");
+
+        double setminwidth = 70;
+        submitBtn.setMinWidth(setminwidth);
+        backBtn.setMinWidth(setminwidth);
         
         submitBtn.setOnAction(event->{
             String nim = nimField.getText();
@@ -208,7 +224,8 @@ public class Main extends Application{
         });
 
         HBox hbox = new HBox(5,submitBtn,backBtn);
-        VBox vbox = new VBox(10,label,nimField,hbox);
+        hbox.setAlignment(Pos.CENTER);
+        VBox vbox = new VBox(15,label,nimField,hbox);
         vbox.setPadding(new Insets(15));
         Scene scene = new Scene(vbox, 400, 400);
         stage.setTitle("Login student");

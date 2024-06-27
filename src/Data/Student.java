@@ -3,12 +3,13 @@ package Data;
 import Books.Book;
 import Exception.IllegalAdminAccess;
 import Utama.Main;
-import anjay.emailSanksi;
+// import anjay.emailSanksi;
 import anjay.sendEmailKembali;
 import anjay.sendEmailPinjam;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -16,8 +17,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
+// import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 // import javafx.scene.Scene;
@@ -75,8 +77,15 @@ public class Student extends User{
             mein.Mainmenu(stage);
         });
 
+        double setminwidth = 150;
+        pinjamButton.setMinWidth(setminwidth);
+        returButton.setMinWidth(setminwidth);
+        tampilkanButton.setMinWidth(setminwidth);
+        logoutButton.setMinWidth(setminwidth);
+
         VBox vBox = new VBox(menuLabel,pinjamButton,returButton,tampilkanButton,logoutButton);
         vBox.setSpacing(10);
+        vBox.setAlignment(Pos.CENTER);
         Scene scene = new Scene(vBox, 400, 400);
         stage.setTitle("Menu Student");
         stage.setScene(scene);
@@ -132,6 +141,9 @@ public class Student extends User{
 
     public void tampilkanbukuborrowed(Stage stage) {
         TableView<Book> table = new TableView<>();
+
+        TableColumn<Book, Number> nomerColumn = new TableColumn<>("No");
+        nomerColumn.setCellValueFactory(new PropertyValueFactory<>("nomerUrut"));
     
         TableColumn<Book, String> judulColumn = new TableColumn<>("Judul");
         judulColumn.setCellValueFactory(new PropertyValueFactory<>("judul"));
@@ -156,8 +168,13 @@ public class Student extends User{
         backButton.setOnAction(event->{
             kembalikanBuku(stage);
         });
+
+        for (int i = 0; i < booklist.size(); i++) {
+            booklist.get(i).setNomerUrut(i + 1);
+        }
     
         List<TableColumn<Book, ?>> columns = new ArrayList<>();
+        columns.add(nomerColumn);
         columns.add(judulColumn);
         columns.add(penulisColumn);
         columns.add(bookIdColumn);
@@ -180,6 +197,9 @@ public class Student extends User{
     //menampilkan buku yang tersedia
     public void displayBooksController(Stage stage) {
         TableView<Book> table = new TableView<>();
+
+        TableColumn<Book, Number> nomerColumn = new TableColumn<>("No");
+        nomerColumn.setCellValueFactory(new PropertyValueFactory<>("nomerUrut"));
     
         TableColumn<Book, String> judulColumn = new TableColumn<>("Judul");
         judulColumn.setCellValueFactory(new PropertyValueFactory<>("judul"));
@@ -196,11 +216,16 @@ public class Student extends User{
         TableColumn<Book, String> categoryColumn = new TableColumn<>("Kategori");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category")); 
     
+        for (int i = 0; i < booklist.size(); i++) {
+            booklist.get(i).setNomerUrut(i + 1);
+        }
+
         Button backBtn = new Button("Back");
         backBtn.setOnAction(event -> {
            pinjamBuku(stage);
         });
     
+        table.getColumns().add(nomerColumn);
         table.getColumns().add(judulColumn);
         table.getColumns().add(penulisColumn);
         table.getColumns().add(bookIdColumn);
@@ -218,176 +243,170 @@ public class Student extends User{
     }
 
     //pinjam buku
-    public void pinjamBuku(Stage stage){
-        Label juduLabel = new Label("Judul atau BookId");
+    public void pinjamBuku(Stage stage) {
+        Label juduLabel = new Label("Judul");
         TextField juduField = new TextField();
-
+    
         Label jumlahLabel = new Label("Jumlah");
         TextField jumlahField = new TextField();
-
+    
         Label durasiLabel = new Label("Durasi pinjam (Max 14 hari)");
         TextField durasField = new TextField();
-
+    
         Button lihatbukuButton = new Button("Lihat Buku");
         Button submiButton = new Button("submit");
         Button exitButton = new Button("exit");
-
-        submiButton.setOnAction(event->{
+    
+        double setminwidth = 70;
+        lihatbukuButton.setMinWidth(setminwidth);
+        submiButton.setMinWidth(setminwidth);
+        exitButton.setMinWidth(setminwidth);
+    
+        submiButton.setOnAction(event -> {
+            String judul = juduField.getText();
+            int jumlah = Integer.parseInt(jumlahField.getText());
+            int durasi = Integer.parseInt(durasField.getText());
+    
+            boolean bukuDitemukan = false;
+    
             try {
-                String judul = juduField.getText();
-                int jumlah = Integer.parseInt(jumlahField.getText());
-                int durasi = Integer.parseInt(durasField.getText());
-                boolean isValid = false;            
-    
-                for (Book book : booklist) {
-                    if (book.getJudul().equals(judul) || book.getBookId().equals(judul)) {
-                        isValid = true;
-                        if (jumlah <= book.getStock()) {
-                            if (durasi <= 14) {
-                                book.kurangStock(jumlah);
-                                Book bukuDipinjam = new Book(book);
-                                bukuDipinjam.setStock(jumlah);
-                                bukuDipinjam.setDurasi(durasi);
-                                bukuDipinjam.setTanggalPinjam(new Date());
-                                bukuBorrowed.add(bukuDipinjam);
-                                sendEmailPinjam.kirimEmail(this);
-    
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setHeaderText("Buku berhasil dipinjam");
-                                alert.setContentText("Email berhasil terkirim");
-                                alert.show();
-                            
-                            } else {
-                                Alert alert = new Alert(Alert.AlertType.WARNING);
-                                alert.setHeaderText("Durasi pinjam maksimal 14 hari");
-                                alert.showAndWait();
-                                return;                         
-                            }
+                for (Book cek : booklist) {
+                    if (cek.getJudul().equalsIgnoreCase(judul)) {
+                        bukuDitemukan = true;
+                        if (jumlah > cek.getStock()) {
+                            showWarning("WARNING", "Jumlah melebihi stock yang ada", null);
                         } else {
-                            Alert alert = new Alert(Alert.AlertType.WARNING);
-                            alert.setHeaderText("Stok tidak mencukupi");
-                            alert.showAndWait();
-                            return; 
+                            if (durasi > 14) {
+                                showWarning("WARNING", "Melebihi ketentuan batas pinjam", null);
+                            } else {
+                                cek.kurangStock(jumlah);
+                                Book bukuBorowed = new Book(cek);
+                                bukuBorowed.setStock(jumlah);
+                                bukuBorowed.setDurasi(durasi);
+                                bukuBorrowed.add(bukuBorowed);
+                                bukuBorowed.setTanggalPinjam(new Date());
+                                showAlert("INFORMATION", "Buku berhasil dipinjam", "Email berhasil terkirim");
+                                sendEmailPinjam.kirimEmail(this);
+                                return;
+                            }
                         }
-                    }else{
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setHeaderText("Buku tidak ditemukan");
-                        alert.showAndWait();
-                        return; 
                     }
                 }
     
-                if (!isValid) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setHeaderText("Buku tidak ditemukan");
-                    alert.showAndWait();
+                if (!bukuDitemukan) {
+                    showWarning("WARNING", "Buku tidak ditemukan", null);
                 }
-                
             } catch (Exception e) {
-                Alert error = new Alert(AlertType.ERROR);
-                error.setHeaderText("Sepertinya Ada yang salah");
-                error.showAndWait();
+                System.out.println(e.getMessage());
             }
         });
-
-        lihatbukuButton.setOnAction(event->{
+    
+        lihatbukuButton.setOnAction(event -> {
             displayBooksController(stage);
         });
-
-        exitButton.setOnAction(event->{
+    
+        exitButton.setOnAction(event -> {
             menuStudent(stage);
         });
-
+    
         juduField.clear();
         jumlahField.clear();
         durasField.clear();
-
-        HBox hbox = new HBox(7,submiButton,lihatbukuButton,exitButton);
-        VBox vBox = new VBox(10,juduLabel,juduField,jumlahLabel,jumlahField,durasiLabel,durasField,hbox);
+    
+        HBox hbox = new HBox(7, submiButton, exitButton);
+        hbox.setAlignment(Pos.CENTER);
+        VBox vBox = new VBox(10, juduLabel, juduField, jumlahLabel, jumlahField, durasiLabel, durasField, lihatbukuButton, hbox);
         vBox.setPadding(new Insets(15));
         Scene scene = new Scene(vBox, 400, 400);
         stage.setTitle("Pinjam Buku");
         stage.setScene(scene);
         stage.show();
     }
+    
 
     //kembalikan buku
-    private void kembalikanBuku(Stage stage){
-        Label judulLabel = new Label("Judul atau BookId");
+    private void kembalikanBuku(Stage stage) {
+        Label judulLabel = new Label("Judul");
         TextField judulField = new TextField();
-
+    
         Label jumlahLabel = new Label("Jumlah kembali");
         TextField jumlahField = new TextField();
-
+    
         Button lihatBukuButton = new Button("Lihat buku yang dipinjam");
         Button submitButton = new Button("submit");
         Button exitButton = new Button("exit");
-
-        lihatBukuButton.setOnAction(event->{
+    
+        double setminwidth = 70;
+        lihatBukuButton.setMinWidth(setminwidth);
+        submitButton.setMinWidth(setminwidth);
+        exitButton.setMinWidth(setminwidth);
+    
+        lihatBukuButton.setOnAction(event -> {
             tampilkanbukuborrowed(stage);
         });
-
-        submitButton.setOnAction(event->{
+    
+        submitButton.setOnAction(event -> {
             String judul = judulField.getText();
-            jumlahkembali = Integer.parseInt(jumlahField.getText());
-
-            for(Book back : bukuBorrowed){
-                if(back.getBookId().equals(judul) || back.getJudul().equals(judul)){
-                    if(jumlahkembali <= back.getStock()){
-                        for(Book tambah : booklist){
-                            back.setStock(back.getStock() - jumlahkembali);
-                            // tambah.tambahStock(jumlahkembali);
-                            tambah.setStock(jumlahkembali + tambah.getStock());
-                            System.out.println("buku berhasil dikembalikan");
-                            sendEmailKembali.kirimEmail(this);
-
-                            if(back.getStock() == 0){
-                                bukuBorrowed.remove(back);
+            int jumlahreturn = Integer.parseInt(jumlahField.getText());
+            boolean bukuDitemukan = false;
+    
+            try {
+                for (Book back : bukuBorrowed) {
+                    if (back.getJudul().equalsIgnoreCase(judul)) {
+                        bukuDitemukan = true;
+                        if (jumlahreturn <= back.getStock()) {
+                            for (Book tambah : booklist) {
+                                if (tambah.getJudul().equalsIgnoreCase(judul)) {
+                                    back.setStock(back.getStock() - jumlahreturn);
+                                    tambah.setStock(jumlahreturn + tambah.getStock());
+                                    showAlert("INFORMATION", "Buku berhasil dikembalikan", "Email berhasil terkirim");
+                                    sendEmailKembali.kirimEmail(this);
+    
+                                    if (back.getStock() == 0) {
+                                        bukuBorrowed.remove(back);
+                                    }
+    
+                                    Date tanggalKembali = new Date();
+                                    long selisih = selisihHari(back.getTanggalPinjam(), tanggalKembali);
+                                    if (selisih > back.getDurasi()) {
+                                        long keterlambatan = selisih - back.getDurasi();
+                                        System.out.println("Anda terlambat mengembalikan selama " + keterlambatan + " hari");
+                                        beriSanksi(keterlambatan);
+                                    }
+                                    return;
+                                }
                             }
-
-                            Date tanggalKembali = new Date();
-                            long selisih = selisihHari(back.getTanggalPinjam(), tanggalKembali);
-                            if(selisih > back.getDurasi()){
-                                long keterlambatan = selisih - back.getDurasi();
-                                System.out.println("anda terlambat mengembalikan selama "+keterlambatan+" hari");
-                                beriSanksi(keterlambatan);
-                                emailSanksi.kirimEmail(this);
-                            }
-                            return;
+                        } else {
+                            showWarning("WARNING", "Melebihi jumlah yang dipinjam", null);
                         }
-                    } 
-                    else{
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setHeaderText("Melebihi jumlah pada saat pinjam");
-                        alert.showAndWait();
-                        return; 
                     }
-                }else{
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setHeaderText("Buku tidak ditemukan");
-                    alert.showAndWait();
-                    return; 
                 }
+    
+                if (!bukuDitemukan) {
+                    showWarning("WARNING", "Buku tidak ditemukan", null);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         });
-
-        exitButton.setOnAction(event->{
+    
+        exitButton.setOnAction(event -> {
             menuStudent(stage);
         });
-
+    
         judulField.clear();
         jumlahField.clear();
-
-        HBox hbox = new HBox(5,submitButton,lihatBukuButton,exitButton);
-        VBox vBox = new VBox(10,judulLabel,judulField,jumlahLabel,jumlahField,hbox);
+    
+        HBox hbox = new HBox(5, submitButton, exitButton);
+        hbox.setAlignment(Pos.CENTER);
+        VBox vBox = new VBox(10, judulLabel, judulField, jumlahLabel, jumlahField, lihatBukuButton, hbox);
         vBox.setPadding(new Insets(15));
         Scene scene = new Scene(vBox, 400, 400);
         stage.setTitle("Mengembalikan Buku");
         stage.setScene(scene);
         stage.show();
     }
-
-    //tampilkan buku
+    
     
     //pinjam buku
     public void pinjamBuku(){
@@ -433,7 +452,6 @@ public class Student extends User{
                     System.out.println(e.getMessage());
                 }
             }
-
     }    
 
     public static int jumlahkembali;
@@ -562,4 +580,22 @@ public class Student extends User{
             }
         }
     }
+
+    private void showAlert(String title, String header, String contrnt){
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(contrnt);
+        alert.show();
+    }
+
+    private void showWarning(String title, String header, String contrnt){
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(contrnt);
+        alert.show();
+    }
+
+    
 }

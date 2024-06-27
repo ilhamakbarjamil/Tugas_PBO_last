@@ -66,6 +66,7 @@ public class User extends Application implements iMenu{
     protected String fakultas;
     protected String jurusan;
     protected String email;
+    protected int nomerUrut;
 
     public User(String nama, String nim, String fakultas, String jurusan, String email){
         this.nama = nama;
@@ -76,6 +77,15 @@ public class User extends Application implements iMenu{
     }
 
     public User(){}
+
+
+    public int getNomerUrut() {
+        return nomerUrut;
+    }
+
+    public void setNomerUrut(int nomerUrut) {
+        this.nomerUrut = nomerUrut;
+    }
 
     public void setNama(String nama) {
         this.nama = nama;

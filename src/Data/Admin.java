@@ -15,6 +15,7 @@ import Utama.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 // import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -36,7 +37,7 @@ public class Admin extends User{
         launch(args);
     }
     private String USERNAME = "admin";
-    private String PASSWORD = "admin123";
+    private String PASSWORD = "admin";
 
     public Admin(String name, String nim, String faculty, String program, String email){
         super(name, nim, faculty, program, email);
@@ -327,7 +328,15 @@ public class Admin extends User{
             main.Mainmenu(stage);
         });
 
-        VBox vbox = new VBox(label,addStudentBtn,addbookBtn,cekStudentBtn,cekBookBtn, backButton);
+        double setwidth = 150;
+        addStudentBtn.setMinWidth(setwidth);
+        addbookBtn.setMinWidth(setwidth);
+        cekStudentBtn.setMinWidth(setwidth);
+        cekBookBtn.setMinWidth(setwidth);
+        backButton.setMinWidth(setwidth);
+
+        VBox vbox = new VBox(10,label,addStudentBtn,addbookBtn,cekStudentBtn,cekBookBtn, backButton);
+        vbox.setAlignment(Pos.CENTER);
         Scene scene = new Scene(vbox, 400, 400);
         stage.setTitle("Admin menu");
         stage.setScene(scene);
@@ -446,6 +455,13 @@ public class Admin extends User{
 
         Button backButton = new Button("back");
 
+        double setminwidth = 100;
+        storyButton.setMinWidth(setminwidth);
+        historyButton.setMinWidth(setminwidth);
+        textButton.setMinWidth(setminwidth);
+        backButton.setMinWidth(setminwidth);
+
+
         storyButton.setOnAction(event->{
             addBookStory(stage);
         });
@@ -463,8 +479,11 @@ public class Admin extends User{
         });
 
         HBox hBoxButton = new HBox(8,storyButton,historyButton,textButton);
+        hBoxButton.setAlignment(Pos.CENTER);
         HBox hbox = new HBox(backButton);
+        hbox.setAlignment(Pos.CENTER);
         VBox vbox = new VBox(10,kategoriLabel,hBoxButton,hbox);
+        vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(15));
         Scene scene = new Scene(vbox,400,400);
         stage.setTitle("Pilih kategori");
@@ -696,6 +715,9 @@ public class Admin extends User{
     public void displaystudent(Stage stage){
         TableView<Student> table = new TableView<>();
 
+        // TableColumn<Student, Number> nomerColumn = new TableColumn<>("No");
+        // nomerColumn.setCellValueFactory(new PropertyValueFactory<>("nomerUrut"));
+
         TableColumn<Student, String > namaColumn = new TableColumn<>("Nama");
         namaColumn.setCellValueFactory(new PropertyValueFactory<>("nama"));
 
@@ -712,11 +734,18 @@ public class Admin extends User{
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
         Button backBtn = new Button("back");
+        double setminwidth = 100;
+        backBtn.setMinWidth(setminwidth);
 
         backBtn.setOnAction(event->{
             adminMenu(stage);
         });
 
+        for (int i = 0; i < booklist.size(); i++) {
+            booklist.get(i).setNomerUrut(i + 1);
+        }
+
+        // table.getColumns().add(nomerColumn);
         table.getColumns().add(namaColumn);
         table.getColumns().add(nimColumn);
         table.getColumns().add(fakultasColumn);
@@ -727,6 +756,7 @@ public class Admin extends User{
         table.setItems(userlist);
 
         VBox vBox = new VBox(table, backBtn);
+        // vBox.setAlignment(Pos.CENTER);
         Scene scene = new Scene(vBox, 600, 400);
         stage.setTitle("Daftar Student");
         stage.setScene(scene);
@@ -735,6 +765,9 @@ public class Admin extends User{
 
     public void displayBooks(Stage stage) {
         TableView<Book> table = new TableView<>();
+
+        TableColumn<Book, Number> nomerColumn = new TableColumn<>("No");
+        nomerColumn.setCellValueFactory(new PropertyValueFactory<>("nomerUrut"));
     
         TableColumn<Book, String> judulColumn = new TableColumn<>("Judul");
         judulColumn.setCellValueFactory(new PropertyValueFactory<>("judul"));
@@ -752,10 +785,18 @@ public class Admin extends User{
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category")); // Ensure this matches the getter method name
     
         Button backBtn = new Button("Back");
+        double setminwidth = 100;
+        backBtn.setMinWidth(setminwidth);
+        
         backBtn.setOnAction(event -> {
             adminMenu(stage);
         });
-    
+
+        for (int i = 0; i < booklist.size(); i++) {
+            booklist.get(i).setNomerUrut(i + 1);
+        }
+        
+        table.getColumns().add(nomerColumn);
         table.getColumns().add(judulColumn);
         table.getColumns().add(penulisColumn);
         table.getColumns().add(bookIdColumn);
@@ -774,6 +815,9 @@ public class Admin extends User{
 
     public void displayBooksController(Stage stage) {
         TableView<Book> table = new TableView<>();
+
+        TableColumn<Book, Number> nomerColumn = new TableColumn<>("No");
+        nomerColumn.setCellValueFactory(new PropertyValueFactory<>("nomerUrut"));
     
         TableColumn<Book, String> judulColumn = new TableColumn<>("Judul");
         judulColumn.setCellValueFactory(new PropertyValueFactory<>("judul"));
@@ -795,7 +839,12 @@ public class Admin extends User{
             Student student = new Student();
             student.pinjamBuku(stage);
         });
+
+        for (int i = 0; i < booklist.size(); i++) {
+            booklist.get(i).setNomerUrut(i + 1);
+        }
     
+        table.getColumns().add(nomerColumn);
         table.getColumns().add(judulColumn);
         table.getColumns().add(penulisColumn);
         table.getColumns().add(bookIdColumn);

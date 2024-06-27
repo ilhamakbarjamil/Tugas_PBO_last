@@ -7,6 +7,7 @@ public class Book {
     int stock;
     int durasi;
     private Date tanggalPinjam;
+    private int nomerUrut;
 
     public Book(String judul,  String author, String bookId, String category, int stock){
         this.judul = judul;
@@ -98,5 +99,13 @@ public class Book {
 
     public void setTanggalPinjam(Date tanggalPinjam) {
         this.tanggalPinjam = tanggalPinjam;
+    }
+
+    public int getNomerUrut() {
+        return nomerUrut;
+    }
+
+    public void setNomerUrut(int nomerUrut) {
+        this.nomerUrut = nomerUrut;
     }
 }

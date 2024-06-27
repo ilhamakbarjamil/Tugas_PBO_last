@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "type": "java",
             "name": "StudentController",
@@ -18,7 +19,8 @@
             "name": "Student",
             "request": "launch",
             "mainClass": "Data.Student",
-            "projectName": "perpustakaan_8eb74cb0"
+            "projectName": "perpustakaan_8eb74cb0",
+            "vmArgs": "--module-path \"C:/Users/Ilham Akbar Jamil/OneDrive/Documents/javafx-sdk-21.0.3/lib\" --add-modules javafx.controls,javafx.fxml"
         },
         {
             "type": "java",
