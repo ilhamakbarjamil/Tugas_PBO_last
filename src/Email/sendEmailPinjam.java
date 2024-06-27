@@ -1,6 +1,5 @@
-package anjay;
+package Email;
 
-import java.util.Date;
 // import java.util.ArrayList;
 import java.util.Properties;
 import javax.mail.*;
@@ -9,15 +8,13 @@ import javax.mail.internet.*;
 import Books.Book;
 import Data.Student;
 
-// import Data.User;
-
 // import Data.Student;
 
-public class sendEmailKembali {
+public class sendEmailPinjam {
     public static void kirimEmail(Student student){
         // Student student = new Student("", "", "", "", "");
-        final String username = "";
-        final String password = "";
+        final String username = "ilhamakbarjamil8@gmail.com";
+        final String password = "iycx ojhe cmmc hxqf";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -36,29 +33,28 @@ public class sendEmailKembali {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(student.getEmail()));
-            message.setSubject("Mengembalikan Buku");
-            
+            message.setSubject("Pinjam Buku");
+        
             StringBuilder emailContent = new StringBuilder();
-            emailContent.append("Terima kasih,\nBuku berhasil di kembalikan\n");
+            emailContent.append("Terima kasih,\nBuku berhasil dipinjam\n");
             emailContent.append("----------------------------------------------------------------------\n");
-            emailContent.append("Buku yang dikembalikan\n");
+            emailContent.append("Buku yang diPinjam\n");
             emailContent.append("----------------------------------------------------------------------\n");
             for(Book book : student.getBukuBorrowed()){
                 emailContent.append("Judul\t: "+book.getJudul()+"\n");
                 emailContent.append("Author\t: "+book.getAuthor()+"\n");
                 emailContent.append("BookId\t: "+book.getBookId()+"\n");
                 emailContent.append("Kategori: "+book.getCategory()+"\n");
-                emailContent.append("Jumlah\t: "+Student.jumlahkembali+"\n");
-                emailContent.append("tanggal\t:"+ new Date());
-                emailContent.append(" ");
+                emailContent.append("Jumlah\t: "+book.getStock()+"\n");
+                emailContent.append("durasi\t: "+book.getDurasi()+" hari\n");
+                emailContent.append("Tanggal\t: "+book.getTanggalPinjam());
+                emailContent.append("\n");
             }
             emailContent.append("\n----------------------------------------------------------------------");
-            // for(Book display : User.booklist){
 
-            // }
-            
             message.setText(emailContent.toString());
             Transport.send(message);
+            
             System.out.println("email berhasil dikirim");
 
         } catch (MessagingException e) {

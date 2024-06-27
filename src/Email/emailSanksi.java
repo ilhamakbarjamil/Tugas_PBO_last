@@ -1,4 +1,4 @@
-package anjay;
+package Email;
 
 // import java.util.ArrayList;
 import java.util.Properties;
