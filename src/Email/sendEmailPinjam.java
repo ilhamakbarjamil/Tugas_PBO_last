@@ -43,14 +43,13 @@ public class sendEmailPinjam {
             emailContent.append("Buku yang diPinjam\n");
             emailContent.append("----------------------------------------------------------------------\n");
             for(Book book : student.getBukuBorrowed()){
-                emailContent.append("Judul\t: "+book.getJudul()+"\n");
+                emailContent.append("\nJudul\t: "+book.getJudul()+"\n");
                 emailContent.append("Author\t: "+book.getAuthor()+"\n");
                 emailContent.append("BookId\t: "+book.getBookId()+"\n");
                 emailContent.append("Kategori: "+book.getCategory()+"\n");
                 emailContent.append("Jumlah\t: "+book.getStock()+"\n");
                 emailContent.append("durasi\t: "+book.getDurasi()+" hari\n");
                 emailContent.append("Tanggal\t: "+book.getTanggalPinjam());
-                emailContent.append("\n");
             }
             emailContent.append("\n----------------------------------------------------------------------");
 
