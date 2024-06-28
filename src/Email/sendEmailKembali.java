@@ -1,5 +1,6 @@
 package Email;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 // import java.util.ArrayList;
 import java.util.Properties;
@@ -14,10 +15,11 @@ import Data.Student;
 // import Data.Student;
 
 public class sendEmailKembali {
-    public static void kirimEmail(Student student){
+    public static void kirimEmail(Student student) throws UnsupportedEncodingException{
         // Student student = new Student("", "", "", "", "");
         final String username = "ilhamakbarjamil8@gmail.com";
         final String password = "iycx ojhe cmmc hxqf";
+        final String sender = "Perpustakaan-Ku";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -34,7 +36,7 @@ public class sendEmailKembali {
 
         try {
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username));
+            message.setFrom(new InternetAddress(username,sender));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(student.getEmail()));
             message.setSubject("Mengembalikan Buku");
             
