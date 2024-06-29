@@ -78,7 +78,7 @@ public class Main extends Application{
         scan.close();
     }
 
-    
+
     public void inputNim(Scanner scan){
         checkNim = true;
         while (checkNim){

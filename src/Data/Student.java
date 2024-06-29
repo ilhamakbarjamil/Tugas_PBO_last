@@ -348,7 +348,7 @@ public class Student extends User{
             String judul = judulField.getText();
             int jumlahreturn = Integer.parseInt(jumlahField.getText());
             boolean bukuDitemukan = false;
-    
+            jumlahkembali = jumlahreturn;
             try {
                 for (Book back : bukuBorrowed) {
                     if (back.getJudul().equalsIgnoreCase(judul)) {
