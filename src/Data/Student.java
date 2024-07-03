@@ -5,6 +5,7 @@ import Email.sendEmailKembali;
 import Email.sendEmailPinjam;
 import Exception.IllegalAdminAccess;
 import Utama.Main;
+// import WhatsApp_API.sendWhatsapp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -18,24 +19,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-// import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-// import javafx.scene.Scene;
-// import javafx.scene.control.Alert;
-// import javafx.scene.control.Button;
-// import javafx.scene.control.Label;
-// import javafx.scene.control.Alert.AlertType;
-// import javafx.scene.layout.VBox;
-// import javafx.stage.Stage;
-// import javafx.scene.Scene;
-// import javafx.scene.control.Alert;
-// import javafx.scene.control.Alert.AlertType;
-// import javafx.scene.control.Button;
-// import javafx.scene.control.Label;
-// import javafx.scene.control.TextField;
-// import javafx.scene.layout.VBox;
-// import javafx.stage.Stage;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -141,9 +126,6 @@ public class Student extends User{
     public void tampilkanbukuborrowed(Stage stage) {
         TableView<Book> table = new TableView<>();
 
-        TableColumn<Book, Number> nomerColumn = new TableColumn<>("No");
-        nomerColumn.setCellValueFactory(new PropertyValueFactory<>("nomerUrut"));
-    
         TableColumn<Book, String> judulColumn = new TableColumn<>("Judul");
         judulColumn.setCellValueFactory(new PropertyValueFactory<>("judul"));
     
@@ -167,21 +149,15 @@ public class Student extends User{
         backButton.setOnAction(event->{
             kembalikanBuku(stage);
         });
-
-        for (int i = 0; i < booklist.size(); i++) {
-            booklist.get(i).setNomerUrut(i + 1);
-        }
     
-        List<TableColumn<Book, ?>> columns = new ArrayList<>();
-        columns.add(nomerColumn);
-        columns.add(judulColumn);
-        columns.add(penulisColumn);
-        columns.add(bookIdColumn);
-        columns.add(kategotiColumn); 
-        columns.add(jumlahColumn); 
-        columns.add(durasiColumn);
-
-        table.getColumns().addAll(columns);
+        table.getColumns().add(judulColumn);
+        table.getColumns().add(penulisColumn);
+        table.getColumns().add(bookIdColumn);
+        table.getColumns().add(jumlahColumn);
+        table.getColumns().add(durasiColumn);
+    
+        ObservableList<Book> bookList = FXCollections.observableArrayList(bukuBorrowed);
+        table.setItems(bookList);
         
         ObservableList<Book> borrowedBooks = FXCollections.observableArrayList(bukuBorrowed);
         table.setItems(borrowedBooks);
@@ -251,7 +227,7 @@ public class Student extends User{
     
         Label durasiLabel = new Label("Durasi pinjam (Max 14 hari)");
         TextField durasField = new TextField();
-    
+
         Button lihatbukuButton = new Button("Lihat Buku");
         Button submiButton = new Button("submit");
         Button exitButton = new Button("exit");
@@ -284,7 +260,7 @@ public class Student extends User{
                                 bukuBorowed.setDurasi(durasi);
                                 bukuBorrowed.add(bukuBorowed);
                                 bukuBorowed.setTanggalPinjam(new Date());
-                                showAlert("INFORMATION", "Buku berhasil dipinjam", "Email berhasil terkirim");
+                                showAlert("INFORMATION", "Buku berhasil dipinjam", "Email berhasil terkirim");                        
                                 sendEmailPinjam.kirimEmail(this);
                                 return;
                             }
@@ -298,6 +274,9 @@ public class Student extends User{
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+            juduField.clear();
+            jumlahField.clear();
+            durasField.clear();
         });
     
         lihatbukuButton.setOnAction(event -> {
@@ -314,7 +293,7 @@ public class Student extends User{
     
         HBox hbox = new HBox(7, submiButton, exitButton);
         hbox.setAlignment(Pos.CENTER);
-        VBox vBox = new VBox(10, juduLabel, juduField, jumlahLabel, jumlahField, durasiLabel, durasField, lihatbukuButton, hbox);
+        VBox vBox = new VBox(10, juduLabel, juduField, jumlahLabel, jumlahField, durasiLabel, durasField, lihatbukuButton,hbox);
         vBox.setPadding(new Insets(15));
         Scene scene = new Scene(vBox, 400, 400);
         stage.setTitle("Pinjam Buku");

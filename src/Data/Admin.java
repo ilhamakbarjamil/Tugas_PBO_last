@@ -741,9 +741,6 @@ public class Admin extends User{
             adminMenu(stage);
         });
 
-        for (int i = 0; i < booklist.size(); i++) {
-            booklist.get(i).setNomerUrut(i + 1);
-        }
 
         // table.getColumns().add(nomerColumn);
         table.getColumns().add(namaColumn);
@@ -782,7 +779,7 @@ public class Admin extends User{
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
     
         TableColumn<Book, String> categoryColumn = new TableColumn<>("Kategori");
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category")); // Ensure this matches the getter method name
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category")); 
     
         Button backBtn = new Button("Back");
         double setminwidth = 100;

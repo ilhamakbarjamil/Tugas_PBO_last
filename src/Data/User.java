@@ -127,6 +127,11 @@ public class User extends Application implements iMenu{
         this.email = email;
     }
 
+    public static Student fromString(String line) {
+        String[] parts = line.split(",");
+        return new Student(parts[0], parts[1], parts[2], parts[3], parts[4]);
+    }
+
     //display Book
     public void displayBook(){
         System.out.println("Booklist");
