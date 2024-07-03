@@ -4,8 +4,35 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
-
+        {
+            "type": "java",
+            "name": "koneksi",
+            "request": "launch",
+            "mainClass": "WData_base.koneksi",
+            "projectName": "perpustakaan_8eb74cb0"
+        },
+        {
+            "type": "java",
+            "name": "koneksi",
+            "request": "launch",
+            "mainClass": "Data_base.koneksi",
+            "projectName": "perpustakaan_8eb74cb0"
+        },
+        {
+            "type": "java",
+            "name": "EmailSenderApp",
+            "request": "launch",
+            "mainClass": "CRUD.EmailSenderApp",
+            "projectName": "perpustakaan_8eb74cb0",
+            "vmArgs": "--module-path \"C:/Users/Ilham Akbar Jamil/OneDrive/Documents/javafx-sdk-21.0.3/lib\" --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
+            "name": "HelloWorld",
+            "request": "launch",
+            "mainClass": "CRUD.HelloWorld",
+            "projectName": "perpustakaan_8eb74cb0"
+        },
         {
             "type": "java",
             "name": "StudentController",

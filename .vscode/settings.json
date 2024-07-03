@@ -11,7 +11,9 @@
             "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx.media.jar",
             "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx.swing.jar",
             "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx.web.jar",
-            "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx-swt.jar"
+            "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\javafx-sdk-21.0.3\\lib\\javafx-swt.jar",
+            "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\Projects\\java\\JAVA_LIBRARY\\twilio-10.4.0-jar-with-dependencies.jar",
+            "c:\\Users\\Ilham Akbar Jamil\\OneDrive\\Documents\\Projects\\java\\JAVA_LIBRARY\\mysql-connector-j-8.4.0\\mysql-connector-j-8.4.0\\mysql-connector-j-8.4.0.jar"
         ],
         "exclude": [
             "lib/javafx-swt.jar"
