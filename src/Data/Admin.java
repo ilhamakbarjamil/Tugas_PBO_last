@@ -1,12 +1,9 @@
 package Data;
 
-// import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
-// import java.util.ResourceBundle.Control;
-
 import Books.Book;
-// import Books.Book;
 import Books.HistoryBook;
 import Books.StoryBook;
 import Books.TextBook;
@@ -733,12 +730,17 @@ public class Admin extends User{
         TableColumn<Student, String> emailColumn = new TableColumn<>("Email");
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
+        Button deleteButton = new Button("delete");
         Button backBtn = new Button("back");
         double setminwidth = 100;
         backBtn.setMinWidth(setminwidth);
 
         backBtn.setOnAction(event->{
             adminMenu(stage);
+        });
+
+        deleteButton.setOnAction(event ->{
+            deleteStudent(stage);
         });
 
 
@@ -752,10 +754,69 @@ public class Admin extends User{
         ObservableList<Student> userlist = FXCollections.observableArrayList(Main.userlist);
         table.setItems(userlist);
 
-        VBox vBox = new VBox(table, backBtn);
+        HBox hbox = new HBox(backBtn,deleteButton);
+        hbox.setSpacing(15);
+        hbox.setAlignment(Pos.CENTER);
+        VBox vBox = new VBox(table, hbox);
         // vBox.setAlignment(Pos.CENTER);
         Scene scene = new Scene(vBox, 600, 400);
         stage.setTitle("Daftar Student");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void deleteStudent(Stage stage){ 
+        Label namaLabel = new Label("Nim :");
+        TextField namaField = new TextField();
+
+        Button displayButton = new Button("cek student");
+        Button backButton = new Button("back");
+        Button deleteButton = new Button("delete");
+
+        deleteButton.setOnAction(event->{
+            ArrayList <Student> deletelist = new ArrayList<>();
+            String nim = namaField.getText();
+            boolean found = false;
+            for(Student delete : Main.userlist){
+                if(nim.equals(delete.getNim())){
+                    found = true;
+                    deletelist.add(delete);
+                    namaField.clear();
+                }
+            }
+            if(found){
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setHeaderText("Nim berhasil dihapus");
+                alert.show();
+            }else{
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setHeaderText("Nim tidak ditemukan");
+                alert.show();
+            }
+            Main.userlist.removeAll(deletelist);
+        });
+
+        displayButton.setOnAction(event->{
+            displaystudent(stage);
+        });
+
+        backButton.setOnAction(event->{
+            adminMenu(stage);
+        });
+
+        double setbuttonwidth = 50;
+        displayButton.setMinWidth(setbuttonwidth);
+        backButton.setMinWidth(setbuttonwidth);
+        deleteButton.setMinWidth(setbuttonwidth);
+
+        HBox hbox = new HBox(deleteButton,displayButton,backButton);
+        hbox.setSpacing(10);
+        hbox.setAlignment(Pos.CENTER);
+        VBox vbox = new VBox(namaLabel,namaField, hbox);
+        vbox.setSpacing(15);
+        vbox.setPadding(new Insets(50));
+        Scene scene = new Scene(vbox, 400, 400);
+        stage.setTitle("Hapus Daftar Student");
         stage.setScene(scene);
         stage.show();
     }
@@ -781,9 +842,15 @@ public class Admin extends User{
         TableColumn<Book, String> categoryColumn = new TableColumn<>("Kategori");
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category")); 
     
+        Button deleteButton = new Button("delete");
         Button backBtn = new Button("Back");
         double setminwidth = 100;
         backBtn.setMinWidth(setminwidth);
+        deleteButton.setMinWidth(setminwidth);
+
+        deleteButton.setOnAction(event->{
+            deleteBook(stage);
+        });
         
         backBtn.setOnAction(event -> {
             adminMenu(stage);
@@ -803,9 +870,68 @@ public class Admin extends User{
         ObservableList<Book> bookList = FXCollections.observableArrayList(booklist);
         table.setItems(bookList);
     
-        VBox vbox = new VBox(table, backBtn);
+        HBox hbox = new HBox(deleteButton,backBtn);
+        hbox.setAlignment(Pos.CENTER);
+        hbox.setSpacing(15);
+        VBox vbox = new VBox(table,hbox);
         Scene scene = new Scene(vbox, 600, 400);
         stage.setTitle("Daftar Buku");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void deleteBook(Stage stage){
+        Label judulLabel = new Label("Judul Buku :");
+        TextField judulField = new TextField();
+
+        Button displayButton = new Button("cek");
+        Button deleteButton = new Button("delete");
+        Button backButton = new Button("back");
+
+        double setminwidth = 80;
+        deleteButton.setMinWidth(setminwidth);
+        backButton.setMinWidth(setminwidth);
+        displayButton.setMinWidth(setminwidth);
+
+        displayButton.setOnAction(event->{
+            displayBooks(stage);
+        });
+
+        backButton.setOnAction(event->{
+            adminMenu(stage);
+        });
+
+        deleteButton.setOnAction(event->{
+            ArrayList <Book> deletebook = new ArrayList<>();
+            String judul = judulField.getText();
+            boolean found = false;
+            for(Book delete : User.booklist){
+                if(judul.equals(delete.getJudul())){
+                    found = true;
+                    deletebook.add(delete);
+                    judulField.clear();
+                }
+            }
+            if(found){
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setHeaderText("Buku berhasil dihapus");
+                alert.show();
+            }else{
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setHeaderText("Buku tidak ditemukan");
+                alert.show();
+            }
+            User.booklist.removeAll(deletebook);
+        });
+
+        HBox hbox = new HBox(deleteButton,displayButton,backButton);
+        hbox.setSpacing(15);
+        hbox.setAlignment(Pos.CENTER);
+        VBox vbox = new VBox(judulLabel,judulField,hbox);
+        vbox.setPadding(new Insets(15));
+        vbox.setSpacing(10);
+        Scene scene = new Scene(vbox, 300, 300);
+        stage.setTitle("delete book");
         stage.setScene(scene);
         stage.show();
     }

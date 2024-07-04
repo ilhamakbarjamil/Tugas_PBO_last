@@ -101,7 +101,7 @@ public class Main extends Application{
     public void start(Stage arg0) throws Exception {
         userlist.add(new Student("Farhan Fauzi", "202310370311100", "Teknik", "Informatika", "farhan.uzie77@gmail.com"));
         userlist.add(new Student("Ilham Akbar Jamil", "202310370311085", "Teknik", "Informatika", "ilhamakbarjamil8@gmail.com"));
-        admin.inputBook(new TextBook("babi", "akbar", "1718381338657-88", "Text", 10));
+        admin.inputBook(new TextBook("futsal", "akbar", "1718381338657-88", "Text", 10));
 
        Mainmenu(arg0);
     }
