@@ -102,7 +102,7 @@ public class Main extends Application{
         userlist.add(new Student("Farhan Fauzi", "202310370311100", "Teknik", "Informatika", "farhan.uzie77@gmail.com"));
         userlist.add(new Student("Ilham Akbar Jamil", "202310370311085", "Teknik", "Informatika", "ilhamakbarjamil8@gmail.com"));
         admin.inputBook(new TextBook("futsal", "akbar", "1718381338657-88", "Text", 10));
-
+        admin.tambahStudent(new Student("Yudis Pratama", "202310370311000", "Teknik", "Informatika", "yudispratama@gmail.com"));
        Mainmenu(arg0);
     }
 
